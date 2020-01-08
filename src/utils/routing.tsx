@@ -1,18 +1,16 @@
 import React from "react";
 import {
     Switch,
-    Route,
-    Link
+    Route
 } from "react-router-dom";
-import Home from "./components/Home/Home";
-import About from "./components/About/About";
+import Home from "../components/Home/Home";
+import About from "../components/About/About";
+import CreateBadge from "../components/CreateBadge/CreateBadge";
+
 
 export default function Routing() {
     return (
         <div>
-            <button><Link to="/">Home</Link></button>
-            <button> <Link to="/about">About</Link></button>
-
             {/*
             A <Switch> looks through all its children <Route>
             elements and renders the first one whose path
@@ -39,5 +37,11 @@ const routes = [
         path: "/about",
         component: About,
         exact: true
+    },
+    {
+        path: "/create",
+        component: CreateBadge,
+        exact: true
     }
+
 ];
