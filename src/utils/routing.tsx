@@ -6,6 +6,8 @@ import {
 import Home from "../components/Home/Home";
 import About from "../components/About/About";
 import CreateBadge from "../components/CreateBadge/CreateBadge";
+import TestComponent from "../components/TestComponent/TestComponent";
+import RenderBadge from "../components/RenderBadge/RenderBadge";
 
 
 export default function Routing() {
@@ -22,6 +24,7 @@ export default function Routing() {
                 {routes.map((route, index) => (
                     <Route key={index} path={route.path} exact={route.exact} component={route.component} />
                 ))}
+                <Route path="/:id" children={<RenderBadge />}></Route>
             </Switch>
         </div>
     );
@@ -42,6 +45,12 @@ const routes = [
         path: "/create",
         component: CreateBadge,
         exact: true
+    },
+    {
+        path: "/count",
+        component: TestComponent,
+        exact: true
     }
+
 
 ];
