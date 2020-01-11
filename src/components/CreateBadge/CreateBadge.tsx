@@ -1,4 +1,5 @@
 import React from 'react';
+import ImageUploader from 'react-images-upload';
 
 
 // function CreateBadge() {
@@ -11,44 +12,54 @@ import React from 'react';
 // }
 
 interface Props { }
-interface CountProps {
-    count: number
-}
 
 interface State {
-    count: number;
+    picture: any,
+    uploadStatus: string
 };
 
 class CreateBadge extends React.Component<Props, State> {
-    state: State = {
-        count: 0
-    };
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            picture: null,
+            uploadStatus: "Upload Image"
+        };
+        this.onDrop = this.onDrop.bind(this);
+    }
 
-    increment = () => {
+    onDrop(pic) {
+        console.log("Pic: ", pic)
         this.setState({
-            count: (this.state.count + 1)
+            picture: pic,
+            uploadStatus: "Image successfully uploaded"
         });
-    };
-
-    decrement = () => {
-        this.setState({
-            count: (this.state.count - 1)
-        });
-    };
+    }
 
     render() {
         return (
             <div>
-                <Count count={this.state.count} />
-                <button onClick={this.increment}>Increment</button>
-                <button onClick={this.decrement}>Decrement</button>
+                <form>
+                    <label>
+                        Name:
+                        <input type="text" name="name" />
+                    </label>
+
+                    <input type="submit" value="Submit" />
+                </form>
+                <p>{this.state.uploadStatus}</p>
+                <ImageUploader
+                    withIcon={true}
+                    buttonText='Upload image'
+                    onChange={this.onDrop}
+                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                    maxFileSize={5242880}
+                    singleImage={true}
+                />
+
             </div>
         );
     }
 }
 
 export default CreateBadge;
-
-const Count: React.FunctionComponent<CountProps> = (props) => {
-    return <h1>{props.count}</h1>;
-};
