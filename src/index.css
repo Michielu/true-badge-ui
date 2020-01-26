@@ -21,3 +21,7 @@ body {
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.tb-quote {
+  color: #212529
+}
