@@ -23,5 +23,6 @@ body {
 }
 
 .tb-quote {
-  color: #212529
+  color: #212529;
+  margin-bottom:3px;
 }
