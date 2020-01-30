@@ -3,6 +3,7 @@ import {
     Link
 } from "react-router-dom";
 import TbCard from '../../partials/TbCard/TbCard';
+import TestComponent from '../TestComponent/TestComponent';
 
 
 const Home: React.FunctionComponent<{}> = () => {
@@ -14,6 +15,7 @@ const Home: React.FunctionComponent<{}> = () => {
             </TbCard>
             <br />
             <button> <Link to="/create">Create Badge</Link></button>
+            <TestComponent />
         </div>
     )
 };
