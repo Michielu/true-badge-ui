@@ -1,0 +1,5 @@
+Scss tips:
+https://www.sitepoint.com/8-tips-help-get-best-sass/
+
+Do not include anything but variables, function declarations and other SASS features in your _.scss files.
+If you include actual CSS, it will duplicate this CSS across every file you import the master into.

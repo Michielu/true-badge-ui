@@ -1,3 +1,9 @@
+// When importing the master, you leave out the underscore, and it
+// will look for a file with the underscore. This prevents the SCSS
+// compiler from generating a CSS file from it.
+@import "styles/variables/colors";
+@import "styles/placeholders/placeholders";
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -13,7 +19,7 @@ body {
 
 /* TODO look up good css styling */
 .app-body {
-  background-color: #00284d;
+  background-color: $tb-secondary;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -22,16 +28,21 @@ body {
 }
 
 .content-body{
-  background-color:#fff2e6;
+  @extend %tb-box-shawdow;
+  background-color: $white;
   min-height: 100vh;
   margin:20px;
 }
 
 .tb-quote {
-  color: #212529;
+  @extend %tb-box-shawdow;
+  color:$tb-text-primary;
   margin-bottom:3px;
 }
 .tb-jumbotron{
-  background-color: #99ccff;
+  @extend %tb-box-shawdow;
+  background-color: $tb-primary;
+  color: $tb-secondary;
   margin:20px 5px 15px 5px;
+  text-align: center;
 }
