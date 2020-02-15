@@ -11,18 +11,27 @@ body {
   text-align: center;
 }
 
+/* TODO look up good css styling */
 .app-body {
-  background-color: #282c34;
+  background-color: #00284d;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+}
+
+.content-body{
+  background-color:#fff2e6;
+  min-height: 100vh;
+  margin:20px;
 }
 
 .tb-quote {
   color: #212529;
   margin-bottom:3px;
+}
+.tb-jumbotron{
+  background-color: #99ccff;
+  margin:20px 5px 15px 5px;
 }

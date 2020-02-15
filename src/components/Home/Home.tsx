@@ -2,8 +2,8 @@ import React from 'react';
 import {
     Link
 } from "react-router-dom";
+import { Jumbotron } from 'react-bootstrap';
 import TbCard from '../../partials/TbCard/TbCard';
-import TestComponent from '../TestComponent/TestComponent';
 
 
 const Home: React.FunctionComponent<{}> = () => {
@@ -11,11 +11,13 @@ const Home: React.FunctionComponent<{}> = () => {
 
     return (
         <div>
+            <Jumbotron className="tb-jumbotron">
+                <h1>Welcome to TrueBadge</h1>
+            </Jumbotron>
             <TbCard text={quote}>
             </TbCard>
             <br />
             <button> <Link to="/create">Create Badge</Link></button>
-            <TestComponent />
         </div>
     )
 };
