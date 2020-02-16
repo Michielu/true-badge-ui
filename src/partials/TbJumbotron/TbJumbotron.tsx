@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Jumbotron } from 'react-bootstrap';
 
-interface CardProps {
+interface JumboProps {
     text: string
 }
 
-const TbJumobtron: React.FunctionComponent<CardProps> = (props) => {
+const TbJumobtron: React.FunctionComponent<JumboProps> = (props) => {
     return (
         <div>
             <Jumbotron className="tb-jumbotron">
