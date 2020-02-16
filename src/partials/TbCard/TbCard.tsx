@@ -8,9 +8,9 @@ interface CardProps {
 
 const TbCard: React.FunctionComponent<CardProps> = (props) => {
     return (
-        <div className="row tb-quote">
+        <div className="row">
             <div className="col-8 offset-2">
-                <Card body >{props.text}</Card>
+                <Card className="tb-quote" body >{props.text}</Card>
             </div>
         </div>
     )
