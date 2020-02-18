@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 import Dropzone from 'react-dropzone'
 import { ReactMic } from 'react-mic';
 
+
 const thumbsContainer = {
     display: 'flex',
     // flexDirection: 'row',
@@ -66,6 +67,7 @@ class TbForm extends React.Component<FormProps, State> {
         this.toggleRecord = this.toggleRecord.bind(this);
         this.onData = this.onData.bind(this);
         this.onStop = this.onStop.bind(this);
+        this.playBlob = this.playBlob.bind(this);
     }
 
     //TODO use tooltip for additional information
@@ -98,14 +100,21 @@ class TbForm extends React.Component<FormProps, State> {
 
     onStop = (recordedBlob) => {
         console.log('recordedBlob is: ', recordedBlob);
+        const url = URL.createObjectURL(recordedBlob.blob);
+
         this.setState({
-            badgeAudio: recordedBlob
+            badgeAudio: url
         })
 
     }
 
     submitBadge = () => {
         console.log("Submit Badge!", this.state);
+    }
+
+    playBlob = () => {
+        const tmp = new Audio(this.state.badgeAudio);
+        tmp.play();
     }
 
     render() {
@@ -155,6 +164,12 @@ class TbForm extends React.Component<FormProps, State> {
                 </div>
                 <div>
                     <h3>Record name</h3>
+                    {/* TODOs
+                    - Styling
+                    - Time limit
+                    - Counter
+                    - Size limit
+                    */}
                     <ReactMic
                         record={this.state.record}
                         className="sound-wave"
@@ -162,9 +177,11 @@ class TbForm extends React.Component<FormProps, State> {
                         onData={this.onData}
                         strokeColor="#000000"
                         backgroundColor="#FF4081" />
-                    <button onClick={this.toggleRecord} type="button">Start</button>
+                    <button onClick={this.toggleRecord} type="button">Record / Rerecord</button>
                     <button onClick={this.toggleRecord} type="button">Stop</button>
+
                 </div>
+                <Button disabled={!this.state.badgeAudio} onClick={this.playBlob}>Play recording</Button>
                 <Button disabled={!(this.state.badgeImage && this.state.badgeName && this.state.badgeAudio)} variant="primary" onClick={this.submitBadge}>Submit</Button>
             </div >
         )
