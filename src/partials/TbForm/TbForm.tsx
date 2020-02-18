@@ -3,9 +3,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 
 import Dropzone from 'react-dropzone'
-
-// import { TbButton } from "../index";
-
+import { ReactMic } from 'react-mic';
 
 const thumbsContainer = {
     display: 'flex',
@@ -45,6 +43,7 @@ interface State {
     badgeName: string,
     badgeAudio: any,
     badgeImage: any,
+    record: boolean
 };
 
 interface ThumbProp {
@@ -58,11 +57,15 @@ class TbForm extends React.Component<FormProps, State> {
         this.state = {
             badgeName: "",
             badgeImage: null,
-            badgeAudio: null
+            badgeAudio: null,
+            record: false
         };
         this.onDrop = this.onDrop.bind(this);
         this.submitBadge = this.submitBadge.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
+        this.toggleRecord = this.toggleRecord.bind(this);
+        this.onData = this.onData.bind(this);
+        this.onStop = this.onStop.bind(this);
     }
 
     //TODO use tooltip for additional information
@@ -74,13 +77,31 @@ class TbForm extends React.Component<FormProps, State> {
 
     //Image
     onDrop = (pic) => {
-        console.log("Pic: ", pic[0])
         Object.assign(pic[0], {
             preview: URL.createObjectURL(pic[0])
         })
         this.setState({
             badgeImage: pic,
         });
+    }
+
+    //Audio
+    toggleRecord = () => {
+        this.setState(prevState => ({
+            record: !prevState.record
+        }));
+    }
+
+    onData = (recordedBlob) => {
+        console.log('chunk of real-time data is: ', recordedBlob);
+    }
+
+    onStop = (recordedBlob) => {
+        console.log('recordedBlob is: ', recordedBlob);
+        this.setState({
+            badgeAudio: recordedBlob
+        })
+
     }
 
     submitBadge = () => {
@@ -120,6 +141,7 @@ class TbForm extends React.Component<FormProps, State> {
                                                         <img
                                                             src={file.preview}
                                                             style={img}
+                                                            alt="Preview of uploaded image"
                                                         />
                                                     </div>
                                                 </div>
@@ -133,8 +155,17 @@ class TbForm extends React.Component<FormProps, State> {
                 </div>
                 <div>
                     <h3>Record name</h3>
+                    <ReactMic
+                        record={this.state.record}
+                        className="sound-wave"
+                        onStop={this.onStop}
+                        onData={this.onData}
+                        strokeColor="#000000"
+                        backgroundColor="#FF4081" />
+                    <button onClick={this.toggleRecord} type="button">Start</button>
+                    <button onClick={this.toggleRecord} type="button">Stop</button>
                 </div>
-                <Button disabled={!(this.state.badgeImage && this.state.badgeName)} variant="primary" onClick={this.submitBadge}>Submit</Button>
+                <Button disabled={!(this.state.badgeImage && this.state.badgeName && this.state.badgeAudio)} variant="primary" onClick={this.submitBadge}>Submit</Button>
             </div >
         )
     }
