@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button } from 'react-bootstrap';
+import { Alert, Button } from 'react-bootstrap';
 
 import Dropzone from 'react-dropzone'
 import { ReactMic } from 'react-mic';
@@ -44,7 +44,8 @@ interface State {
     badgeName: string,
     badgeAudio: any,
     badgeImage: any,
-    record: boolean
+    record: boolean,
+    audioError: boolean
 };
 
 interface ThumbProp {
@@ -59,7 +60,8 @@ class TbForm extends React.Component<FormProps, State> {
             badgeName: "",
             badgeImage: null,
             badgeAudio: null,
-            record: false
+            record: false,
+            audioError: false
         };
         this.onDrop = this.onDrop.bind(this);
         this.submitBadge = this.submitBadge.bind(this);
@@ -100,12 +102,18 @@ class TbForm extends React.Component<FormProps, State> {
 
     onStop = (recordedBlob) => {
         console.log('recordedBlob is: ', recordedBlob);
-        const url = URL.createObjectURL(recordedBlob.blob);
 
-        this.setState({
-            badgeAudio: url
-        })
-
+        //TODO check what the limit I set on the server is and update this
+        if (recordedBlob.stopTime - recordedBlob.startTime > 5000) {
+            this.setState({
+                audioError: true
+            })
+        } else {
+            this.setState({
+                badgeAudio: recordedBlob,
+                audioError: false
+            })
+        }
     }
 
     submitBadge = () => {
@@ -113,7 +121,8 @@ class TbForm extends React.Component<FormProps, State> {
     }
 
     playBlob = () => {
-        const tmp = new Audio(this.state.badgeAudio);
+        const url = URL.createObjectURL(this.state.badgeAudio.blob);
+        const tmp = new Audio(url);
         tmp.play();
     }
 
@@ -177,10 +186,10 @@ class TbForm extends React.Component<FormProps, State> {
                         onData={this.onData}
                         strokeColor="#000000"
                         backgroundColor="#FF4081" />
-                    <button onClick={this.toggleRecord} type="button">Record / Rerecord</button>
-                    <button onClick={this.toggleRecord} type="button">Stop</button>
+                    <button onClick={this.toggleRecord} type="button">Record / Stop</button>
 
                 </div>
+                <Alert show={this.state.audioError} variant="danger">Audio is too long</Alert>
                 <Button disabled={!this.state.badgeAudio} onClick={this.playBlob}>Play recording</Button>
                 <Button disabled={!(this.state.badgeImage && this.state.badgeName && this.state.badgeAudio)} variant="primary" onClick={this.submitBadge}>Submit</Button>
             </div >
