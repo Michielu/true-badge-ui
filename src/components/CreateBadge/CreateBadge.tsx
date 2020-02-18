@@ -1,36 +1,18 @@
 import React from 'react';
 
-import { TbForm } from "../../partials";
+import { TbForm, TbJumbotron } from "../../partials";
 
-// function CreateBadge() {
-//     return (
-//         <div>
-//             <p>Create Badge</p>
+const CreateBadge: React.FunctionComponent<{}> = () => {
 
-//         </div>
-//     );
-// }
+    const createBadgePage: string = "Create Badge";
 
-interface Props { }
+    return (
+        <div>
+            <TbJumbotron text={createBadgePage}></TbJumbotron>
+            <TbForm></TbForm>
+        </div>
+    );
 
-interface State {
-    picture: any,
-    uploadStatus: string
-};
-
-class CreateBadge extends React.Component<Props, State> {
-
-
-    render() {
-        return (
-            <div>
-                <TbForm>
-
-                </TbForm>
-
-            </div>
-        );
-    }
 }
 
 export default CreateBadge;
