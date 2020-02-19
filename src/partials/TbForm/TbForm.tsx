@@ -4,6 +4,8 @@ import { Alert, Button } from 'react-bootstrap';
 
 import Dropzone from 'react-dropzone'
 import { ReactMic } from 'react-mic';
+import { FaMicrophoneAlt } from 'react-icons/fa';
+
 
 
 const thumbsContainer = {
@@ -45,7 +47,8 @@ interface State {
     badgeAudio: any,
     badgeImage: any,
     record: boolean,
-    audioError: boolean
+    audioError: boolean,
+    hoveredIcon: boolean
 };
 
 interface ThumbProp {
@@ -61,7 +64,8 @@ class TbForm extends React.Component<FormProps, State> {
             badgeImage: null,
             badgeAudio: null,
             record: false,
-            audioError: false
+            audioError: false,
+            hoveredIcon: false
         };
         this.onDrop = this.onDrop.bind(this);
         this.submitBadge = this.submitBadge.bind(this);
@@ -70,8 +74,8 @@ class TbForm extends React.Component<FormProps, State> {
         this.onData = this.onData.bind(this);
         this.onStop = this.onStop.bind(this);
         this.playBlob = this.playBlob.bind(this);
+        this.toggleIconCLass = this.toggleIconCLass.bind(this);
     }
-
     //TODO use tooltip for additional information
 
     //Name
@@ -126,73 +130,87 @@ class TbForm extends React.Component<FormProps, State> {
         tmp.play();
     }
 
+    toggleIconCLass = () => {
+        window.console.log("In icon")
+        this.setState((prevState) => ({
+            hoveredIcon: !prevState.hoveredIcon
+        }))
+    }
+
     render() {
         return (
             <div className="row tb-center">
-                <div>
-                    <h3>Input Name</h3>
-                    {/* TODO look into getting value without onChange. 
+                <div className="col-12 col-md-6 tb-center">
+                    <div className="tb-form-field">
+                        <h3>Input Name</h3>
+                        {/* TODO look into getting value without onChange. 
                         Maybe form, maybe different react package 
                         
                         Also, look up how to not rerender entire page with just one state change
                         Debug: Add console.log in Dropzone. Every text change rerenders it
                         */}
-                    <input type="text" onChange={this.handleNameChange}></input>
-                </div>
-                {/* https://react-dropzone.js.org/ */}
-                {/* TODO get styling going on this */}
-                <div>
-                    <h3>Upload Image</h3>
-                    <Dropzone maxSize={5242880} multiple={false} accept='image/jpeg, image/png' onDrop={this.onDrop}>
-                        {({ getRootProps, getInputProps, acceptedFiles }) => {
-                            return (
-                                <div className="container">
-                                    <div {...getRootProps({ className: 'dropzone' })}>
-                                        <input {...getInputProps()} />
-                                        <button type="button">Upload </button>
-                                    </div>
-                                    <aside>
-                                        <aside style={thumbsContainer}>
-                                            {acceptedFiles.map((file: any) => (
-                                                <div style={thumb} key={file.name}>
-                                                    <div style={thumbInner}>
-                                                        <img
-                                                            src={file.preview}
-                                                            style={img}
-                                                            alt="Preview of uploaded image"
-                                                        />
+                        <input type="text" onChange={this.handleNameChange}></input>
+                    </div>
+                    {/* https://react-dropzone.js.org/ */}
+                    {/* TODO get styling going on this */}
+                    <div className="tb-form-field">
+                        <h3>Upload Image</h3>
+                        <Dropzone maxSize={5242880} multiple={false} accept='image/jpeg, image/png' onDrop={this.onDrop}>
+                            {({ getRootProps, getInputProps, acceptedFiles }) => {
+                                return (
+                                    <div className="container">
+                                        <div {...getRootProps({ className: 'dropzone' })}>
+                                            <input {...getInputProps()} />
+                                            <button type="button">Upload </button>
+                                        </div>
+                                        <aside>
+                                            <aside style={thumbsContainer}>
+                                                {acceptedFiles.map((file: any) => (
+                                                    <div style={thumb} key={file.name}>
+                                                        <div style={thumbInner}>
+                                                            <img
+                                                                src={file.preview}
+                                                                style={img}
+                                                                alt="Preview of uploaded image"
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            ))}
+                                                ))}
+                                            </aside>
                                         </aside>
-                                    </aside>
-                                </div>
-                            );
-                        }}
-                    </Dropzone>
-                </div>
-                <div>
-                    <h3>Record name</h3>
-                    {/* TODOs
+                                    </div>
+                                );
+                            }}
+                        </Dropzone>
+                    </div>
+                    <div className="tb-form-field">
+                        <h3>Record name</h3>
+                        {/* TODOs
                     - Styling
                     - Time limit
                     - Counter
                     - Size limit
                     */}
-                    <ReactMic
-                        record={this.state.record}
-                        className="sound-wave"
-                        onStop={this.onStop}
-                        onData={this.onData}
-                        strokeColor="#000000"
-                        backgroundColor="#FF4081" />
-                    <button onClick={this.toggleRecord} type="button">Record / Stop</button>
+                        <div>
+                            <ReactMic
+                                record={this.state.record}
+                                className="sound-wave"
+                                onStop={this.onStop}
+                                onData={this.onData}
+                                strokeColor="#098fe0"
+                                backgroundColor="#e6e7e8"
+                            />
+                        </div>
+                        <div onMouseEnter={this.toggleIconCLass} onMouseLeave={this.toggleIconCLass} className={this.state.hoveredIcon ? 'tb-icon-hover tb-center' : 'tb-icon tb-center'}>
+                            <FaMicrophoneAlt size={52} onClick={this.toggleRecord} />
+                        </div>
+                    </div>
+                    <Alert show={this.state.audioError} variant="danger">Audio is too long</Alert>
+                    <Button disabled={!this.state.badgeAudio} onClick={this.playBlob}>Play recording</Button>
+                    <Button disabled={!(this.state.badgeImage && this.state.badgeName && this.state.badgeAudio)} variant="primary" onClick={this.submitBadge}>Submit</Button>
+                </div >
+            </div>
 
-                </div>
-                <Alert show={this.state.audioError} variant="danger">Audio is too long</Alert>
-                <Button disabled={!this.state.badgeAudio} onClick={this.playBlob}>Play recording</Button>
-                <Button disabled={!(this.state.badgeImage && this.state.badgeName && this.state.badgeAudio)} variant="primary" onClick={this.submitBadge}>Submit</Button>
-            </div >
         )
     }
 };

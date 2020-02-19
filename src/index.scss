@@ -40,6 +40,9 @@ body {
   .content-body{
     margin: 0px;
   }
+  .sound-wave{
+    width:100%;
+  }
 }
 
 .tb-quote {
@@ -57,4 +60,35 @@ body {
 
 .tb-center{
   display: inline-block
+}
+
+.sound-wave{
+  width:60%;
+  height:100%;
+  border-radius: 22px;
+
+}
+
+.tb-form-field{
+  padding:15px;
+  border-bottom: 1px solid black;
+}
+
+// Use mixen or placeholder.. or both!! 
+.tb-icon{
+  color: #1d365b;
+  border: 2px solid #1d365b;
+  border-radius: 32px;
+  width: 80px;
+  padding:6px;
+}
+
+.tb-icon-hover{
+  color: black;
+  border: 2px solid black;
+  border-radius: 32px;
+  width: 80px;
+  padding:6px;
+  background-color:red;
+  cursor: pointer;
 }
