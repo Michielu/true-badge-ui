@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Alert, Button } from 'react-bootstrap';
-
+import { Alert, Button, FormControl } from 'react-bootstrap';
 import Dropzone from 'react-dropzone'
 import { ReactMic } from 'react-mic';
 import { FaMicrophoneAlt } from 'react-icons/fa';
@@ -9,7 +8,7 @@ import { FaMicrophoneAlt } from 'react-icons/fa';
 
 
 const thumbsContainer = {
-    display: 'flex',
+    // display: 'flex',
     // flexDirection: 'row',
     // flexWrap: 'wrap',
     marginTop: 16
@@ -46,14 +45,10 @@ interface State {
     badgeName: string,
     badgeAudio: any,
     badgeImage: any,
-    record: boolean,
+    isRecording: boolean,
     audioError: boolean,
     hoveredIcon: boolean
 };
-
-interface ThumbProp {
-    selectedFile: any
-}
 
 //TODO make this into function with hook
 class TbForm extends React.Component<FormProps, State> {
@@ -63,7 +58,7 @@ class TbForm extends React.Component<FormProps, State> {
             badgeName: "",
             badgeImage: null,
             badgeAudio: null,
-            record: false,
+            isRecording: false,
             audioError: false,
             hoveredIcon: false
         };
@@ -96,7 +91,7 @@ class TbForm extends React.Component<FormProps, State> {
     //Audio
     toggleRecord = () => {
         this.setState(prevState => ({
-            record: !prevState.record
+            isRecording: !prevState.isRecording
         }));
     }
 
@@ -140,7 +135,7 @@ class TbForm extends React.Component<FormProps, State> {
     render() {
         return (
             <div className="row tb-center">
-                <div className="col-12 col-md-6 tb-center">
+                <div id="tb-form" className="col-12 col-md-6 tb-center">
                     <div className="tb-form-field">
                         <h3>Input Name</h3>
                         {/* TODO look into getting value without onChange. 
@@ -149,7 +144,12 @@ class TbForm extends React.Component<FormProps, State> {
                         Also, look up how to not rerender entire page with just one state change
                         Debug: Add console.log in Dropzone. Every text change rerenders it
                         */}
-                        <input type="text" onChange={this.handleNameChange}></input>
+                        <FormControl
+                            placeholder="Your name"
+                            aria-label="Your name"
+                            aria-describedby="basic-addon2"
+                            onChange={this.handleNameChange}
+                        />
                     </div>
                     {/* https://react-dropzone.js.org/ */}
                     {/* TODO get styling going on this */}
@@ -161,11 +161,14 @@ class TbForm extends React.Component<FormProps, State> {
                                     <div className="container">
                                         <div {...getRootProps({ className: 'dropzone' })}>
                                             <input {...getInputProps()} />
-                                            <button type="button">Upload </button>
+                                            <Button variant="outline-primary" size="lg">Upload</Button>
                                         </div>
-                                        <aside>
-                                            <aside style={thumbsContainer}>
-                                                {acceptedFiles.map((file: any) => (
+                                        <aside style={thumbsContainer} className="tb-center">
+                                            {acceptedFiles.map((file: any) => (
+                                                <div>
+                                                    <div>
+                                                        <small>Preview</small>
+                                                    </div>
                                                     <div style={thumb} key={file.name}>
                                                         <div style={thumbInner}>
                                                             <img
@@ -175,8 +178,9 @@ class TbForm extends React.Component<FormProps, State> {
                                                             />
                                                         </div>
                                                     </div>
-                                                ))}
-                                            </aside>
+                                                </div>
+
+                                            ))}
                                         </aside>
                                     </div>
                                 );
@@ -190,10 +194,13 @@ class TbForm extends React.Component<FormProps, State> {
                     - Time limit
                     - Counter
                     - Size limit
+                    - Red dot symolizing recording
+                    - change audioError to audioErrorCode
+                    - Fix onhover/onClick mic styling on mobile
                     */}
-                        <div>
+                        <div onClick={this.toggleRecord}>
                             <ReactMic
-                                record={this.state.record}
+                                record={this.state.isRecording}
                                 className="sound-wave"
                                 onStop={this.onStop}
                                 onData={this.onData}
@@ -204,12 +211,16 @@ class TbForm extends React.Component<FormProps, State> {
                         <div onMouseEnter={this.toggleIconCLass} onMouseLeave={this.toggleIconCLass} className={this.state.hoveredIcon ? 'tb-icon-hover tb-center' : 'tb-icon tb-center'}>
                             <FaMicrophoneAlt size={52} onClick={this.toggleRecord} />
                         </div>
+                        <div>
+                            {this.state.isRecording ? <p>Recording in progress</p> : null}
+                        </div>
                     </div>
                     <Alert show={this.state.audioError} variant="danger">Audio is too long</Alert>
-                    <Button disabled={!this.state.badgeAudio} onClick={this.playBlob}>Play recording</Button>
-                    <Button disabled={!(this.state.badgeImage && this.state.badgeName && this.state.badgeAudio)} variant="primary" onClick={this.submitBadge}>Submit</Button>
+                    {this.state.badgeAudio ? <Button variant="outline-secondary" onClick={this.playBlob} block>Play recording</Button> : null}
+
+                    <Button disabled={!(this.state.badgeImage && this.state.badgeName && this.state.badgeAudio)} variant="primary" onClick={this.submitBadge} block>Submit</Button>
                 </div >
-            </div>
+            </div >
 
         )
     }
