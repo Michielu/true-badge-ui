@@ -5,39 +5,6 @@ import Dropzone from 'react-dropzone'
 import { ReactMic } from 'react-mic';
 import { FaMicrophoneAlt } from 'react-icons/fa';
 
-
-
-const thumbsContainer = {
-    // display: 'flex',
-    // flexDirection: 'row',
-    // flexWrap: 'wrap',
-    marginTop: 16
-};
-
-const thumb = {
-    display: 'inline-flex',
-    borderRadius: 2,
-    border: '1px solid #eaeaea',
-    marginBottom: 8,
-    marginRight: 8,
-    width: 100,
-    height: 100,
-    padding: 4,
-    // boxSizing: 'border-box'
-};
-
-const thumbInner = {
-    display: 'flex',
-    minWidth: 0,
-    overflow: 'hidden'
-};
-
-const img = {
-    display: 'block',
-    width: 'auto',
-    height: '100%'
-};
-
 interface FormProps {
     // text: string
 }
@@ -152,9 +119,9 @@ class TbForm extends React.Component<FormProps, State> {
                         />
                     </div>
                     {/* https://react-dropzone.js.org/ */}
-                    {/* TODO get styling going on this */}
+                    {/* TODO center img center. If img is long horizontally, it only gets the beginning */}
                     <div className="tb-form-field">
-                        <h3>Upload Image</h3>
+                        <h3>Upload Image<small>(optional)</small></h3>
                         <Dropzone maxSize={5242880} multiple={false} accept='image/jpeg, image/png' onDrop={this.onDrop}>
                             {({ getRootProps, getInputProps, acceptedFiles }) => {
                                 return (
@@ -163,20 +130,18 @@ class TbForm extends React.Component<FormProps, State> {
                                             <input {...getInputProps()} />
                                             <Button variant="outline-primary" size="lg">Upload</Button>
                                         </div>
-                                        <aside style={thumbsContainer} className="tb-center">
+                                        <aside className="tb-center tb-preview-container">
                                             {acceptedFiles.map((file: any) => (
                                                 <div>
                                                     <div>
                                                         <small>Preview</small>
                                                     </div>
-                                                    <div style={thumb} key={file.name}>
-                                                        <div style={thumbInner}>
-                                                            <img
-                                                                src={file.preview}
-                                                                style={img}
-                                                                alt="Preview of uploaded image"
-                                                            />
-                                                        </div>
+                                                    <div className="tb-preview" key={file.name}>
+                                                        <img
+                                                            src={file.preview}
+                                                            className="tb-preview-img"
+                                                            alt="Preview of uploaded image"
+                                                        />
                                                     </div>
                                                 </div>
 
@@ -218,7 +183,7 @@ class TbForm extends React.Component<FormProps, State> {
                     <Alert show={this.state.audioError} variant="danger">Audio is too long</Alert>
                     {this.state.badgeAudio ? <Button variant="outline-secondary" onClick={this.playBlob} block>Play recording</Button> : null}
 
-                    <Button disabled={!(this.state.badgeImage && this.state.badgeName && this.state.badgeAudio)} variant="primary" onClick={this.submitBadge} block>Submit</Button>
+                    <Button disabled={!(this.state.badgeName && this.state.badgeAudio)} variant="primary" onClick={this.submitBadge} block>Submit</Button>
                 </div >
             </div >
 
