@@ -3,6 +3,7 @@
 // compiler from generating a CSS file from it.
 @import "styles/variables/colors";
 @import "styles/variables/screens";
+@import "styles/mixins/_mixins.scss";
 @import "styles/placeholders/placeholders";
 
 body {
@@ -63,10 +64,10 @@ body {
 }
 
 .sound-wave{
+  @extend %tb-box-shawdow;
   width:60%;
   height:100%;
   border-radius: 22px;
-
 }
 
 #tb-form{
@@ -75,26 +76,18 @@ body {
 
 .tb-form-field{
   padding:10px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid $black;
   margin: 15px;
 }
 
 // Use mixen or placeholder.. or both!! 
 .tb-icon{
-  color: #1d365b;
-  border: 2px solid #1d365b;
-  border-radius: 32px;
-  width: 80px;
-  padding:6px;
+  @include icons($tb-primary);
 }
 
 .tb-icon-hover{
-  color: black;
-  border: 2px solid black;
-  border-radius: 32px;
-  width: 80px;
-  padding:6px;
-  background-color:red;
+  @include icons($tb-secondary);
+  background-color:$tb-primary;
   cursor: pointer;
 }
 
@@ -104,12 +97,11 @@ body {
 
 .tb-preview {
   display: inline-flex;
-  border: 1px solid #eaeaea;
+  border: 1px solid $tb-secondary;
   width: 150px;
   height: 150px;
   padding: 4px;
   overflow: hidden;
-
 };
 
 .tb-preview-img {
