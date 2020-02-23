@@ -5,6 +5,8 @@ import Dropzone from 'react-dropzone'
 import { ReactMic } from 'react-mic';
 import { FaMicrophoneAlt } from 'react-icons/fa';
 
+import BadgeDataService from "../../api/badge/BadgeDataService";
+
 interface FormProps {
     // text: string
 }
@@ -82,8 +84,9 @@ class TbForm extends React.Component<FormProps, State> {
         }
     }
 
-    submitBadge = () => {
-        console.log("Submit Badge!", this.state);
+    submitBadge = async () => {
+        const status = await BadgeDataService.create(this.state);
+        console.log("Submit Badge!", status, this.state);
     }
 
     playBlob = () => {
@@ -119,7 +122,9 @@ class TbForm extends React.Component<FormProps, State> {
                         />
                     </div>
                     {/* https://react-dropzone.js.org/ */}
-                    {/* TODO center img center. If img is long horizontally, it only gets the beginning */}
+                    {/* TODO center img center. If img is long horizontally, it only gets the beginning 
+                        - have the user select a square of it.. like if I change my profile pic on fb
+                    */}
                     <div className="tb-form-field">
                         <h3>Upload Image<small>(optional)</small></h3>
                         <Dropzone maxSize={5242880} multiple={false} accept='image/jpeg, image/png' onDrop={this.onDrop}>
@@ -131,8 +136,8 @@ class TbForm extends React.Component<FormProps, State> {
                                             <Button variant="outline-primary" size="lg">Upload</Button>
                                         </div>
                                         <aside className="tb-center tb-preview-container">
-                                            {acceptedFiles.map((file: any) => (
-                                                <div>
+                                            {acceptedFiles.map((file: any, i: number) => (
+                                                <div key={"img" + i}>
                                                     <div>
                                                         <small>Preview</small>
                                                     </div>

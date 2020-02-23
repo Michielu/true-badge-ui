@@ -1,4 +1,5 @@
 import React from 'react';
+import BadgeDataService from '../../api/badge/BadgeDataService';
 
 interface Props { }
 interface CountProps {
@@ -27,28 +28,8 @@ class TestComponent extends React.Component<Props, State> {
     };
 
     getPhoto = async () => {
-        const url = "/photos/retrieve";
-        const urlBody = {
-            "id": "5d93f86afc0f8f0bb8088811"
-
-        }
-        const data: any = { //TODO change this any
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *client
-            body: JSON.stringify(urlBody) // body data type must match "Content-Type" header
-        };
-        const response = await fetch(url, data);
-        const body = await response.json();
-        console.log("Body: ", body);
-        // this.setState({ groups: body, isLoading: false });
+        const a = await BadgeDataService.test();
+        console.log("a", a);
     }
 
     render() {
