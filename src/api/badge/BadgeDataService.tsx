@@ -13,7 +13,7 @@ const get = () => {
 
 const create = async ({ badgeAudio, badgeImage, badgeName }) => {
     //TODO Store badgeAudio. Return Id
-    const badgeID = "5e518515a66f6827aa562ce9";
+    const audioID = "5e518515a66f6827aa562ce9";
 
     //TODO store badgeImage. Return ID
     const imageID = "23sdg515a66f68272asdgce2"
@@ -23,8 +23,11 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
     const data = {
         name: badgeName,
         imageID,
-        badgeID
+        audioID,
+        time: Date.now()
     }
+
+    //TODO consistent error handling
     const response = await axiosRequest.post(URL, (data));
 
     console.log('Response: ', response);
