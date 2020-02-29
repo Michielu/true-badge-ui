@@ -25,8 +25,9 @@ function TbModal(props: ModalProps & TbModalProps) {
                 <Modal.Header closeButton>
                     <Modal.Title>Badge created!</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Your badge was successfully created. Copy and paste this URL into any browser:
-                    <input
+                <Modal.Body>
+                    <p>Your badge was successfully created. Copy and paste this URL into any browser:</p>
+                    <input className="tb-badge-url-input"
                         ref={textAreaRef}
                         value={props.badgeUrl}
                     />
