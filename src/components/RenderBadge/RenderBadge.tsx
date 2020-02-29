@@ -1,46 +1,49 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
     useParams //TODO remove this import from this file
 } from "react-router-dom";
 
-interface Props { }
-
-interface State {
-    count: number;
-    id: string;
-};
-
-
-// class RenderBadge extends React.Component<Props, State> {
-//     state: State = {
-//         count: 0,
-//         id: this.getParam()
-//     };
-
-//     getParam = ()=>{
-//         const { id } = useParams(); //TODO check if this is the right way to do it
-//         return id;
-//     }
-
-//     render() {
-//         return (
-//             <div>
-//                 <p>Id is: {{ id }}</p>
-//             </div>
-//         );
-//     }
-// }
-
-function RenderBadge() {
-    // We can use the `useParams` hook here to access
-    // the dynamic pieces of the URL.
-    let { id } = useParams();
-
+function loading(setBusy) {
     return (
         <div>
-            <h3>ID: {id}</h3>
+            Loading...
+            <button onClick={() => setBusy(false)}></button>
         </div>
-    );
+    )
+}
+
+function dataLoaded(setBusy) {
+    return (
+        <div>
+            Loaded!!
+            <button onClick={() => setBusy(true)}></button>
+
+        </div>
+    )
+}
+
+function RenderBadge() {
+    const [isBusy, setBusy] = useState(true);
+    const [badgeID, setBadgeID] = useState(useParams());
+    let { id } = useParams();
+
+    useEffect(() => {
+        //Set badgeID
+        setBadgeID(id || "");
+    }, [badgeID]);
+
+    useEffect(() => {
+        if (isBusy) {
+            //Get badge data
+            console.log("hello")
+        }
+    }, [isBusy]);
+
+
+    // We can use the `useParams` hook here to access
+    // the dynamic pieces of the URL.
+
+    return isBusy ? loading(setBusy) : dataLoaded(setBusy);
 }
 
 export default RenderBadge;

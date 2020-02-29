@@ -24,7 +24,7 @@ export default function Routing() {
                 {routes.map((route, index) => (
                     <Route key={index} path={route.path} exact={route.exact} component={route.component} />
                 ))}
-                <Route path="/:id" children={<RenderBadge />}></Route>
+                <Route path="/b/:id" children={<RenderBadge />}></Route>
             </Switch>
         </div>
     );
