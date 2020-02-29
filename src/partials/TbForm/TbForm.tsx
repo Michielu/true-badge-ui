@@ -6,15 +6,15 @@ import { ReactMic } from 'react-mic';
 import { FaMicrophoneAlt } from 'react-icons/fa';
 
 import BadgeDataService from "../../api/badge/BadgeDataService";
+import { ErrorMessageInterface } from "../../utils/interfaces";
+
+import TbAlert from "../TbAlerts/TbAlerts";
 
 interface FormProps {
     // text: string
 }
 
-interface ErrorMessage {
-    errorMessage: string,
-    errorMessageLong: string
-}
+
 interface State {
     badgeName: string,
     badgeAudio: any,
@@ -23,7 +23,7 @@ interface State {
     audioError: boolean,
     hoveredIcon: boolean,
     hasError: boolean,
-    errorMessages: ErrorMessage
+    errorMessages: ErrorMessageInterface
 };
 
 //TODO make this into function with hook
@@ -128,10 +128,7 @@ class TbForm extends React.Component<FormProps, State> {
             <div className="row tb-center">
                 <div id="tb-form" className="col-12 col-md-6 tb-center">
                     <div className="tb-form-field">
-                        {this.state.hasError ? <Alert variant="danger">
-                            <h4>{this.state.errorMessages.errorMessage}</h4>
-                            <p>{this.state.errorMessages.errorMessageLong}</p></Alert> : null}
-
+                        <TbAlert variant="danger" errorMessages={this.state.errorMessages} hasError={this.state.hasError}></TbAlert>
                         <h3>Input Name</h3>
                         {/* TODO look into getting value without onChange. 
                         Maybe form, maybe different react package 
