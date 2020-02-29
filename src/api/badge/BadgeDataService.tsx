@@ -17,7 +17,6 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
 
     //TODO store badgeImage. Return ID
     const imageID = "23sdg515a66f68272asdgce2"
-
     const URL = "/badge/upload";
 
     const data = {
@@ -29,8 +28,6 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
 
     //TODO consistent error handling
     const response = await axiosRequest.post(URL, (data));
-
-    console.log('Response: ', response);
     return response;
 };
 

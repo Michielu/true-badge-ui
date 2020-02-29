@@ -10,13 +10,20 @@ import BadgeDataService from "../../api/badge/BadgeDataService";
 interface FormProps {
     // text: string
 }
+
+interface ErrorMessage {
+    errorMessage: string,
+    errorMessageLong: string
+}
 interface State {
     badgeName: string,
     badgeAudio: any,
     badgeImage: any,
     isRecording: boolean,
     audioError: boolean,
-    hoveredIcon: boolean
+    hoveredIcon: boolean,
+    hasError: boolean,
+    errorMessages: ErrorMessage
 };
 
 //TODO make this into function with hook
@@ -29,7 +36,9 @@ class TbForm extends React.Component<FormProps, State> {
             badgeAudio: null,
             isRecording: false,
             audioError: false,
-            hoveredIcon: false
+            hoveredIcon: false,
+            hasError: false,
+            errorMessages: { errorMessage: "", errorMessageLong: "" }
         };
         this.onDrop = this.onDrop.bind(this);
         this.submitBadge = this.submitBadge.bind(this);
@@ -65,7 +74,7 @@ class TbForm extends React.Component<FormProps, State> {
     }
 
     onData = (recordedBlob) => {
-        console.log('chunk of real-time data is: ', recordedBlob);
+        // console.log('chunk of real-time data is: ', recordedBlob);
     }
 
     onStop = (recordedBlob) => {
@@ -87,6 +96,19 @@ class TbForm extends React.Component<FormProps, State> {
     submitBadge = async () => {
         const status = await BadgeDataService.create(this.state);
         console.log("Submit Badge!", status, this.state);
+
+        if (status.data.errorMessage) {
+            //TODO test and do something here
+            this.setState({
+                hasError: true,
+                errorMessages: status.data
+            })
+        } else {
+            this.setState({
+                hasError: false
+            })
+        }
+        console.log("Submit Badge!", status, this.state);
     }
 
     playBlob = () => {
@@ -96,7 +118,6 @@ class TbForm extends React.Component<FormProps, State> {
     }
 
     toggleIconCLass = () => {
-        window.console.log("In icon")
         this.setState((prevState) => ({
             hoveredIcon: !prevState.hoveredIcon
         }))
@@ -107,6 +128,10 @@ class TbForm extends React.Component<FormProps, State> {
             <div className="row tb-center">
                 <div id="tb-form" className="col-12 col-md-6 tb-center">
                     <div className="tb-form-field">
+                        {this.state.hasError ? <Alert variant="danger">
+                            <h4>{this.state.errorMessages.errorMessage}</h4>
+                            <p>{this.state.errorMessages.errorMessageLong}</p></Alert> : null}
+
                         <h3>Input Name</h3>
                         {/* TODO look into getting value without onChange. 
                         Maybe form, maybe different react package 
