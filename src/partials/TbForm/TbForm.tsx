@@ -111,7 +111,7 @@ class TbForm extends React.Component<FormProps, State> {
         } else {
             this.setState({
                 hasError: false,
-                badgeUrl: "http://localhost:3001/b/" + status.data.result.badgeURL, //TODO get localhost from elsewhere
+                badgeUrl: window.location.protocol + "//" + window.location.host + "/b/" + status.data.result.badgeURL, //TODO get localhost from elsewhere
                 displayModal: true
             })
         }
