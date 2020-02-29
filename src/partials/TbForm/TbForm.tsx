@@ -9,6 +9,7 @@ import BadgeDataService from "../../api/badge/BadgeDataService";
 import { ErrorMessageInterface } from "../../utils/interfaces";
 
 import TbAlert from "../TbAlerts/TbAlerts";
+import TbModal from "../TbModal/TbModal";
 
 interface FormProps {
     // text: string
@@ -23,7 +24,9 @@ interface State {
     audioError: boolean,
     hoveredIcon: boolean,
     hasError: boolean,
-    errorMessages: ErrorMessageInterface
+    errorMessages: ErrorMessageInterface,
+    badgeUrl: string,
+    displayModal: boolean
 };
 
 //TODO make this into function with hook
@@ -38,7 +41,9 @@ class TbForm extends React.Component<FormProps, State> {
             audioError: false,
             hoveredIcon: false,
             hasError: false,
-            errorMessages: { errorMessage: "", errorMessageLong: "" }
+            errorMessages: { errorMessage: "", errorMessageLong: "" },
+            badgeUrl: "",
+            displayModal: false
         };
         this.onDrop = this.onDrop.bind(this);
         this.submitBadge = this.submitBadge.bind(this);
@@ -48,6 +53,7 @@ class TbForm extends React.Component<FormProps, State> {
         this.onStop = this.onStop.bind(this);
         this.playBlob = this.playBlob.bind(this);
         this.toggleIconCLass = this.toggleIconCLass.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
     //TODO use tooltip for additional information
 
@@ -98,19 +104,24 @@ class TbForm extends React.Component<FormProps, State> {
         console.log("Submit Badge!", status, this.state);
 
         if (status.data.errorMessage) {
-            //TODO test and do something here
             this.setState({
                 hasError: true,
                 errorMessages: status.data
             })
         } else {
             this.setState({
-                hasError: false
+                hasError: false,
+                badgeUrl: "http://localhost:3001/b/" + status.data.result.badgeURL, //TODO get localhost from elsewhere
+                displayModal: true
             })
         }
-        console.log("Submit Badge!", status, this.state);
     }
 
+    closeModal = () => {
+        this.setState({
+            displayModal: false
+        })
+    }
     playBlob = () => {
         const url = URL.createObjectURL(this.state.badgeAudio.blob);
         const tmp = new Audio(url);
@@ -129,6 +140,7 @@ class TbForm extends React.Component<FormProps, State> {
                 <div id="tb-form" className="col-12 col-md-6 tb-center">
                     <div className="tb-form-field">
                         <TbAlert variant="danger" errorMessages={this.state.errorMessages} hasError={this.state.hasError}></TbAlert>
+                        <TbModal show={this.state.displayModal} onHide={this.closeModal} badgeUrl={this.state.badgeUrl}></TbModal>
                         <h3>Input Name</h3>
                         {/* TODO look into getting value without onChange. 
                         Maybe form, maybe different react package 
@@ -208,9 +220,10 @@ class TbForm extends React.Component<FormProps, State> {
                         </div>
                     </div>
                     <Alert show={this.state.audioError} variant="danger">Audio is too long</Alert>
-                    {this.state.badgeAudio ? <Button variant="outline-secondary" onClick={this.playBlob} block>Play recording</Button> : null}
+                    {this.state.badgeAudio ? <Button variant="outline-info" onClick={this.playBlob} block>Play recording</Button> : null}
 
                     <Button disabled={!(this.state.badgeName && this.state.badgeAudio)} variant="primary" onClick={this.submitBadge} block>Submit</Button>
+                    {this.state.badgeUrl ? <p>Badge URL is: {this.state.badgeUrl}</p> : null}
                 </div >
             </div >
 
