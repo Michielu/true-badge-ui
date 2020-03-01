@@ -4,9 +4,7 @@ import axiosRequest from "../../utils/axiosRequest";
 
 const get = async (badgeURL) => {
     const URL = '/b/' + badgeURL;
-    console.log("hi thre: ", URL)
     const res = await axiosRequest.get(URL);
-    console.log("Response in BDgeDataService: ", res)
     return res;
 };
 

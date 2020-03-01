@@ -5,28 +5,66 @@ import {
 
 import BadgeDataService from '../../api/badge/BadgeDataService';
 
-function loading(setBusy) {
+function loadingPage() {
     return (
         <div>
             Loading...
-            <button onClick={() => setBusy(false)}></button>
         </div>
     )
 }
 
-function dataLoaded(setBusy) {
+function dataLoadedPage() {
     return (
         <div>
             Loaded!!
-            <button onClick={() => setBusy(true)}></button>
-
+        {/* Add spinning wheel  */}
         </div>
     )
+}
+
+function invalidURLPage() {
+    return (
+        <div>
+            <h3>Badge URL is invalid</h3>
+            <p>Badge might have expired</p>
+        </div>
+    )
+}
+
+function validURL(badgeData) {
+    return (
+        <div>
+            <h3>Hello!</h3>
+            {badgeData.name}
+        </div>
+    )
+}
+
+function errorPage() {
+    return (
+        <div>
+            <h3>Error occured</h3>
+        </div>
+    )
+}
+
+function handlePage(isBusy, badgeData) {
+    if (isBusy) {
+        return loadingPage();
+    }
+    if (!badgeData.isValidBadgeURL) {
+        return invalidURLPage();
+    }
+    if (badgeData.err) {
+        return errorPage();
+    }
+    return validURL(badgeData);
 }
 
 function RenderBadge() {
     const [isBusy, setBusy] = useState(true);
     const [badgeURL, setBadgeURL] = useState("");
+    const [badgeData, setBadgeData] = useState({});
     let url: any = useParams();
 
     useEffect(() => {
@@ -34,18 +72,24 @@ function RenderBadge() {
         setBadgeURL(url.id);
     }, [badgeURL]);
 
+    //TODO figure this out
     useEffect(() => {
+        async function callBadgeDataService() {
+            const data = await BadgeDataService.get(url.id);
+            setBusy(false);
+            setBadgeData(data.data);
+        }
+
         if (isBusy && url) {
             //Get badge data
-            BadgeDataService.get(url.id);
+            callBadgeDataService();
         }
     }, [isBusy]);
-
 
     // We can use the `useParams` hook here to access
     // the dynamic pieces of the URL.
 
-    return isBusy ? loading(setBusy) : dataLoaded(setBusy);
+    return handlePage(isBusy, badgeData);
 }
 
 export default RenderBadge;
