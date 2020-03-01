@@ -3,6 +3,8 @@ import {
     useParams //TODO remove this import from this file
 } from "react-router-dom";
 
+import BadgeDataService from '../../api/badge/BadgeDataService';
+
 function loading(setBusy) {
     return (
         <div>
@@ -24,18 +26,18 @@ function dataLoaded(setBusy) {
 
 function RenderBadge() {
     const [isBusy, setBusy] = useState(true);
-    const [badgeID, setBadgeID] = useState(useParams());
-    let { id } = useParams();
+    const [badgeURL, setBadgeURL] = useState("");
+    let url: any = useParams();
 
     useEffect(() => {
         //Set badgeID
-        setBadgeID(id || "");
-    }, [badgeID]);
+        setBadgeURL(url.id);
+    }, [badgeURL]);
 
     useEffect(() => {
-        if (isBusy) {
+        if (isBusy && url) {
             //Get badge data
-            console.log("hello")
+            BadgeDataService.get(url.id);
         }
     }, [isBusy]);
 

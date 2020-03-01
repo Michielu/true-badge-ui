@@ -1,14 +1,13 @@
-import axios from "axios";
 import qs from "qs";
 
 import axiosRequest from "../../utils/axiosRequest";
 
-const find = () => {
-
-};
-
-const get = () => {
-
+const get = async (badgeURL) => {
+    const URL = '/b/' + badgeURL;
+    console.log("hi thre: ", URL)
+    const res = await axiosRequest.get(URL);
+    console.log("Response in BDgeDataService: ", res)
+    return res;
 };
 
 const create = async ({ badgeAudio, badgeImage, badgeName }) => {
@@ -26,8 +25,7 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
         time: Date.now()
     }
 
-    //TODO consistent error handling
-    const response = await axiosRequest.post(URL, (data));
+    const response = await axiosRequest.post(URL, data);
     return response;
 };
 
@@ -58,7 +56,6 @@ const test = async () => {
 }
 
 const BadgeDataService = {
-    find,
     get,
     create,
     test
