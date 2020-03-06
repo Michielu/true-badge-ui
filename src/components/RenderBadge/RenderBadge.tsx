@@ -42,7 +42,7 @@ function errorPage() {
     )
 }
 
-function handlePage(isBusy, badgeData) {
+function handlePage(isBusy, badgeData, audioArr) {
     if (isBusy) {
         return loadingPage();
     }
@@ -52,13 +52,16 @@ function handlePage(isBusy, badgeData) {
     if (badgeData.err) {
         return errorPage();
     }
-    return Badge(badgeData);
+    return Badge(badgeData, audioArr);
 }
 
 function RenderBadge() {
     const [isBusy, setBusy] = useState(true);
     const [badgeURL, setBadgeURL] = useState("");
     const [badgeData, setBadgeData] = useState({});
+
+    // const [audio, setAudio] = useState(true);
+    const audioArr = useState(true);
     let url: any = useParams();
 
     useEffect(() => {
@@ -83,7 +86,7 @@ function RenderBadge() {
     // We can use the `useParams` hook here to access
     // the dynamic pieces of the URL.
 
-    return handlePage(isBusy, badgeData);
+    return handlePage(isBusy, badgeData, audioArr);
 }
 
 export default RenderBadge;
