@@ -3,6 +3,7 @@ import {
     useParams //TODO remove this import from this file
 } from "react-router-dom";
 
+import Badge from "./Badge";
 import BadgeDataService from '../../api/badge/BadgeDataService';
 
 function loadingPage() {
@@ -31,14 +32,7 @@ function invalidURLPage() {
     )
 }
 
-function validURL(badgeData) {
-    return (
-        <div>
-            <h3>Hello!</h3>
-            {badgeData.name}
-        </div>
-    )
-}
+
 
 function errorPage() {
     return (
@@ -58,7 +52,7 @@ function handlePage(isBusy, badgeData) {
     if (badgeData.err) {
         return errorPage();
     }
-    return validURL(badgeData);
+    return Badge(badgeData);
 }
 
 function RenderBadge() {
