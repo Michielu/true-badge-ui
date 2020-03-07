@@ -1,4 +1,5 @@
 import qs from "qs";
+import axios from 'axios';
 
 import axiosRequest from "../../utils/axiosRequest";
 
@@ -11,9 +12,12 @@ const get = async (badgeURL) => {
 const create = async ({ badgeAudio, badgeImage, badgeName }) => {
     //TODO Store badgeAudio. Return Id
     const audioID = "5e518515a66f6827aa562ce9";
-
+    //https://github.com/axios/axios/issues/318 for blobs
     //TODO store badgeImage. Return ID
-    const imageID = "23sdg515a66f68272asdgce2"
+    console.log("BadgeImage: ", badgeImage);
+
+    // const imageID = "23sdg515a66f68272asdgce2"
+    const imageID = await storeImage(badgeImage);
     const URL = "/badge/upload";
 
     const data = {
@@ -23,9 +27,34 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
         time: Date.now()
     }
 
-    const response = await axiosRequest.post(URL, data);
-    return response;
+    // const response = await axiosRequest.post(URL, data);
+    // return response;
+    // return 
 };
+
+const storeImage = async (badgeImage) => {
+    const URL = "image/upload";
+    var bodyFormData = new FormData();
+    bodyFormData.append('image', badgeImage);
+    // const imageResponse = await axiosRequest.post(URL, badgeImage);
+    console.log("will formdata show? ", bodyFormData)
+    const imageResponse = await axios({
+        method: 'post',
+        url: URL,
+        data: bodyFormData,
+        headers: { 'Content-Type': 'multipart/form-data' }
+    })
+        .then(function (response) {
+            //handle success
+            console.log(response);
+        })
+        .catch(function (response) {
+            //handle error
+            console.log(response);
+        });
+    console.log("imageResponse: ", imageResponse);
+    return imageResponse;
+}
 
 //Works with java boot backend
 const test = async () => {

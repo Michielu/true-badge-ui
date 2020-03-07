@@ -68,7 +68,7 @@ class TbForm extends React.Component<FormProps, State> {
             preview: URL.createObjectURL(pic[0])
         })
         this.setState({
-            badgeImage: pic,
+            badgeImage: pic[0],
         });
     }
 
@@ -103,18 +103,18 @@ class TbForm extends React.Component<FormProps, State> {
         const status = await BadgeDataService.create(this.state);
         console.log("Submit Badge!", status, this.state);
 
-        if (status.data.errorMessage) {
-            this.setState({
-                hasError: true,
-                errorMessages: status.data
-            })
-        } else {
-            this.setState({
-                hasError: false,
-                badgeUrl: window.location.protocol + "//" + window.location.host + "/b/" + status.data.result.badgeURL, //TODO get localhost from elsewhere
-                displayModal: true
-            })
-        }
+        // if (status.data.errorMessage) {
+        //     this.setState({
+        //         hasError: true,
+        //         errorMessages: status.data
+        //     })
+        // } else {
+        //     this.setState({
+        //         hasError: false,
+        //         badgeUrl: window.location.protocol + "//" + window.location.host + "/b/" + status.data.result.badgeURL, //TODO get localhost from elsewhere
+        //         displayModal: true
+        //     })
+        // }
     }
 
     closeModal = () => {
@@ -161,6 +161,7 @@ class TbForm extends React.Component<FormProps, State> {
                     */}
                     <div className="tb-form-field">
                         <h3>Upload Image<small>(optional)</small></h3>
+                        {/* 5242880 == 5.2 mb */}
                         <Dropzone maxSize={5242880} multiple={false} accept='image/jpeg, image/png' onDrop={this.onDrop}>
                             {({ getRootProps, getInputProps, acceptedFiles }) => {
                                 return (
