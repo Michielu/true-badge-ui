@@ -103,18 +103,18 @@ class TbForm extends React.Component<FormProps, State> {
         const status = await BadgeDataService.create(this.state);
         console.log("Submit Badge!", status, this.state);
 
-        // if (status.data.errorMessage) {
-        //     this.setState({
-        //         hasError: true,
-        //         errorMessages: status.data
-        //     })
-        // } else {
-        //     this.setState({
-        //         hasError: false,
-        //         badgeUrl: window.location.protocol + "//" + window.location.host + "/b/" + status.data.result.badgeURL, //TODO get localhost from elsewhere
-        //         displayModal: true
-        //     })
-        // }
+        if (status.data.errorMessage) {
+            this.setState({
+                hasError: true,
+                errorMessages: status.data
+            })
+        } else {
+            this.setState({
+                hasError: false,
+                badgeUrl: window.location.protocol + "//" + window.location.host + "/b/" + status.data.result.badgeURL, //TODO get localhost from elsewhere
+                displayModal: true
+            })
+        }
     }
 
     closeModal = () => {

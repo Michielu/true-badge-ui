@@ -5,32 +5,27 @@ import axiosRequest from "../../utils/axiosRequest";
 
 const get = async (badgeURL) => {
     const URL = '/b/' + badgeURL;
-    const res = await axiosRequest.get(URL);
+    const badgeData = await axiosRequest.get(URL);
 
     //Do checks
-    const image = await getImage("5e64389318ca864a4e6d15ca");//getImage(res.data.imageKey)
-    console.log("Res in getting badge :", res);
+    const image = await getImage(badgeData.data.imageKey);
+    console.log("Res in getting badge :", badgeData);
     console.log("Image return: ", image.data.result[0]);
     //Get other ones 
 
     const badgeRequirements = {
-        name: res.data.name,
-        isValidBadgeURL: res.data.isValidBadgeURL,
+        name: badgeData.data.name,
+        isValidBadgeURL: badgeData.data.isValidBadgeURL,
         image: image.data.result[0]
-
-
     }
     return badgeRequirements;
 };
 
 const create = async ({ badgeAudio, badgeImage, badgeName }) => {
     //TODO Store badgeAudio. Return Id
-    const audioID = "5e64389318ca864a4e6d15ca";
+    const audioID = "5e64389318ca864a4e6d15caf";
     //https://github.com/axios/axios/issues/318 for blobs
-    //TODO store badgeImage. Return ID
-    console.log("BadgeImage: ", badgeImage);
 
-    // const imageID = "23sdg515a66f68272asdgce2"
     const imageID = await storeImage(badgeImage);
     const URL = "/badge/upload";
 
@@ -40,10 +35,8 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
         audioID,
         time: Date.now()
     }
-
-    // const response = await axiosRequest.post(URL, data);
-    // return response;
-    // return 
+    const response = await axiosRequest.post(URL, data);
+    return response;
 };
 
 const storeImage = async (badgeImage) => {
@@ -58,17 +51,12 @@ const storeImage = async (badgeImage) => {
         url: URL,
         data: bodyFormData,
         headers: { 'Content-Type': 'multipart/form-data' }
-    })
-        .then(function (response) {
-            //handle success
-            console.log(response);
-        })
-        .catch(function (response) {
-            //handle error
-            console.log(response);
-        });
+    });
     console.log("imageResponse: ", imageResponse);
-    return imageResponse;
+    if (imageResponse.data.err) {
+        //TODO error handling
+    }
+    return imageResponse.data.result;
 }
 
 const getImage = async (imageID) => {
