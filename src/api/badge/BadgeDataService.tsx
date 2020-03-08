@@ -6,12 +6,26 @@ import axiosRequest from "../../utils/axiosRequest";
 const get = async (badgeURL) => {
     const URL = '/b/' + badgeURL;
     const res = await axiosRequest.get(URL);
-    return res;
+
+    //Do checks
+    const image = await getImage("5e64389318ca864a4e6d15ca");//getImage(res.data.imageKey)
+    console.log("Res in getting badge :", res);
+    console.log("Image return: ", image.data.result[0]);
+    //Get other ones 
+
+    const badgeRequirements = {
+        name: res.data.name,
+        isValidBadgeURL: res.data.isValidBadgeURL,
+        image: image.data.result[0]
+
+
+    }
+    return badgeRequirements;
 };
 
 const create = async ({ badgeAudio, badgeImage, badgeName }) => {
     //TODO Store badgeAudio. Return Id
-    const audioID = "5e518515a66f6827aa562ce9";
+    const audioID = "5e64389318ca864a4e6d15ca";
     //https://github.com/axios/axios/issues/318 for blobs
     //TODO store badgeImage. Return ID
     console.log("BadgeImage: ", badgeImage);
@@ -35,7 +49,8 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
 const storeImage = async (badgeImage) => {
     const URL = "image/upload";
     var bodyFormData = new FormData();
-    bodyFormData.append('image', badgeImage);
+    bodyFormData.append('file', badgeImage[0]);
+    // bodyFormData.append('image', badgeImage);
     // const imageResponse = await axiosRequest.post(URL, badgeImage);
     console.log("will formdata show? ", bodyFormData)
     const imageResponse = await axios({
@@ -55,6 +70,14 @@ const storeImage = async (badgeImage) => {
     console.log("imageResponse: ", imageResponse);
     return imageResponse;
 }
+
+const getImage = async (imageID) => {
+    //TODO handle null images
+    const URL = '/image/' + imageID;
+    const res = await axiosRequest.get(URL);
+    console.log("Get image: ", res);
+    return res;
+};
 
 //Works with java boot backend
 const test = async () => {

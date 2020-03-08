@@ -69,12 +69,12 @@ function RenderBadge() {
         setBadgeURL(url.id);
     }, [badgeURL]);
 
-    //TODO figure this out
+    //TODO error handling
     useEffect(() => {
         async function callBadgeDataService() {
             const data = await BadgeDataService.get(url.id);
             setBusy(false);
-            setBadgeData(data.data);
+            setBadgeData(data);
         }
 
         if (isBusy && url) {

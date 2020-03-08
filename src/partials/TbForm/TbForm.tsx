@@ -68,7 +68,7 @@ class TbForm extends React.Component<FormProps, State> {
             preview: URL.createObjectURL(pic[0])
         })
         this.setState({
-            badgeImage: pic[0],
+            badgeImage: pic,
         });
     }
 
