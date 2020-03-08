@@ -6,17 +6,16 @@ import axiosRequest from "../../utils/axiosRequest";
 const get = async (badgeURL) => {
     const URL = '/b/' + badgeURL;
     const badgeData = await axiosRequest.get(URL);
-
+    let imageData;
     //Do checks
-    const image = await getImage(badgeData.data.imageKey);
-    console.log("Res in getting badge :", badgeData);
-    console.log("Image return: ", image.data.result[0]);
-    //Get other ones 
+    if (badgeData.data.imageKey) {
+        imageData = await getImage(badgeData.data.imageKey);
+    }
 
     const badgeRequirements = {
         name: badgeData.data.name,
         isValidBadgeURL: badgeData.data.isValidBadgeURL,
-        image: image.data.result[0]
+        image: imageData ? imageData.data.result[0] : null
     }
     return badgeRequirements;
 };
@@ -25,8 +24,11 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
     //TODO Store badgeAudio. Return Id
     const audioID = "5e64389318ca864a4e6d15caf";
     //https://github.com/axios/axios/issues/318 for blobs
+    let imageID;
+    if (badgeImage) {
+        imageID = await storeImage(badgeImage);
+    }
 
-    const imageID = await storeImage(badgeImage);
     const URL = "/badge/upload";
 
     const data = {
@@ -43,16 +45,13 @@ const storeImage = async (badgeImage) => {
     const URL = "image/upload";
     var bodyFormData = new FormData();
     bodyFormData.append('file', badgeImage[0]);
-    // bodyFormData.append('image', badgeImage);
-    // const imageResponse = await axiosRequest.post(URL, badgeImage);
-    console.log("will formdata show? ", bodyFormData)
+
     const imageResponse = await axios({
         method: 'post',
         url: URL,
         data: bodyFormData,
         headers: { 'Content-Type': 'multipart/form-data' }
     });
-    console.log("imageResponse: ", imageResponse);
     if (imageResponse.data.err) {
         //TODO error handling
     }
@@ -63,7 +62,6 @@ const getImage = async (imageID) => {
     //TODO handle null images
     const URL = '/image/' + imageID;
     const res = await axiosRequest.get(URL);
-    console.log("Get image: ", res);
     return res;
 };
 
@@ -88,7 +86,6 @@ const test = async () => {
     };
     const response = await fetch(url, data); //TODO switch to using axios
     //https://medium.com/@thejasonfile/fetch-vs-axios-js-for-making-http-requests-2b261cdd3af5
-    console.log("Response: ", response);
     const body = await response.json();
     return body;
 }

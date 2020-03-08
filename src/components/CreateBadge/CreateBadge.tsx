@@ -3,7 +3,6 @@ import React from 'react';
 import { TbForm, TbJumbotron } from "../../partials";
 
 const CreateBadge: React.FunctionComponent<{}> = () => {
-
     const createBadgePage: string = "Create Badge";
 
     return (
