@@ -10,6 +10,7 @@ import { ErrorMessageInterface } from "../../utils/interfaces";
 
 import TbAlert from "../TbAlerts/TbAlerts";
 import TbModal from "../TbModal/TbModal";
+import TbSpinner from "../TbLoader/TbLoader";
 
 interface FormProps {
     // text: string
@@ -26,7 +27,8 @@ interface State {
     hasError: boolean,
     errorMessages: ErrorMessageInterface,
     badgeUrl: string,
-    displayModal: boolean
+    displayModal: boolean,
+    displaySpinner: boolean
 };
 
 //TODO make this into function with hook
@@ -43,7 +45,8 @@ class TbForm extends React.Component<FormProps, State> {
             hasError: false,
             errorMessages: { errorMessage: "", errorMessageLong: "" },
             badgeUrl: "",
-            displayModal: false
+            displayModal: false,
+            displaySpinner: true
         };
         this.onDrop = this.onDrop.bind(this);
         this.submitBadge = this.submitBadge.bind(this);
@@ -100,19 +103,24 @@ class TbForm extends React.Component<FormProps, State> {
     }
 
     submitBadge = async () => {
+        this.setState({
+            displaySpinner: true
+        });
         const status = await BadgeDataService.create(this.state);
         console.log("Submit Badge!", status, this.state);
 
         if (status.data.errorMessage) {
             this.setState({
                 hasError: true,
-                errorMessages: status.data
+                errorMessages: status.data,
+                displaySpinner: false
             })
         } else {
             this.setState({
                 hasError: false,
                 badgeUrl: window.location.protocol + "//" + window.location.host + "/b/" + status.data.result.badgeURL, //TODO get localhost from elsewhere
-                displayModal: true
+                displayModal: true,
+                displaySpinner: false
             })
         }
     }
@@ -141,6 +149,7 @@ class TbForm extends React.Component<FormProps, State> {
                     <div className="tb-form-field">
                         <TbAlert variant="danger" errorMessages={this.state.errorMessages} hasError={this.state.hasError}></TbAlert>
                         <TbModal show={this.state.displayModal} onHide={this.closeModal} badgeUrl={this.state.badgeUrl}></TbModal>
+                        <TbSpinner show={this.state.displaySpinner} message="Please wait.. generating badge URL" />
                         <h3>Input Name</h3>
                         {/* TODO look into getting value without onChange. 
                         Maybe form, maybe different react package 
