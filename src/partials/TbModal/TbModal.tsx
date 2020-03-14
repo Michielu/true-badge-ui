@@ -30,6 +30,7 @@ function TbModal(props: ModalProps & TbModalProps) {
                     <input className="tb-badge-url-input"
                         ref={textAreaRef}
                         value={props.badgeUrl}
+                        readOnly
                     />
                     <br />
                     <br />

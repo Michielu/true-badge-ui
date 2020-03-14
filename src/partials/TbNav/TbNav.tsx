@@ -16,7 +16,7 @@ const TbNav: React.FunctionComponent<NavProps> = (props) => {
                         <Nav.Link href="/">Home</Nav.Link>
                         <Nav.Link href="/create">Create</Nav.Link>
                         <Nav.Link href="/about">About</Nav.Link>
-                        <Nav.Link href="/">Login/Signup</Nav.Link>
+                        <Nav.Link href="/login">Login/Signup</Nav.Link>
                         <Nav.Link href="/count">React Practice</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
