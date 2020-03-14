@@ -46,7 +46,7 @@ class TbForm extends React.Component<FormProps, State> {
             errorMessages: { errorMessage: "", errorMessageLong: "" },
             badgeUrl: "",
             displayModal: false,
-            displaySpinner: true
+            displaySpinner: false
         };
         this.onDrop = this.onDrop.bind(this);
         this.submitBadge = this.submitBadge.bind(this);

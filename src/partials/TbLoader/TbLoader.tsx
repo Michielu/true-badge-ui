@@ -14,7 +14,7 @@ function TbLoader(props: ModalProps & TbLoaderProps) {
             <Modal.Header>
                 <Modal.Title>{props.message} </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className="tb-text-align-center">
                 <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
                 </Spinner>
