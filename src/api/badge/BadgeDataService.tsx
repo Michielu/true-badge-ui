@@ -6,7 +6,9 @@ import axiosRequest from "../../utils/axiosRequest";
 const get = async (badgeURL) => {
     const URL = '/b/' + badgeURL;
     const badgeData = await axiosRequest.get(URL);
-    let imageData;
+    let imageData, audioData;
+
+    //audioData = await getAudio(badgeData.data.audioKey);
     //Do checks
     if (badgeData.data.imageKey) {
         imageData = await getImage(badgeData.data.imageKey);
@@ -15,14 +17,20 @@ const get = async (badgeURL) => {
     const badgeRequirements = {
         name: badgeData.data.name,
         isValidBadgeURL: badgeData.data.isValidBadgeURL,
-        image: imageData ? imageData.data.result[0] : null
+        image: imageData ? imageData.data.result[0] : null,
+        audio: audioData
     }
     return badgeRequirements;
 };
 
 const create = async ({ badgeAudio, badgeImage, badgeName }) => {
     //TODO Store badgeAudio. Return Id
-    const audioID = "5e64389318ca864a4e6d15caf";
+    let audioID;
+    if (badgeAudio) {
+        audioID = await storeAudio(badgeAudio);
+    }
+    console.log("AudioID: ", audioID);
+
     //https://github.com/axios/axios/issues/318 for blobs
     let imageID;
     if (badgeImage) {
@@ -64,6 +72,26 @@ const getImage = async (imageID) => {
     const res = await axiosRequest.get(URL);
     return res;
 };
+
+const storeAudio = async ({ blob }) => {
+    const URL = "audio/upload";
+    console.log("badgeAudio: ", blob);
+    var bodyFormData = new FormData();
+    bodyFormData.append('file', blob);
+
+    const audioResponse = await axios({
+        method: 'post',
+        url: URL,
+        data: bodyFormData,
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    if (audioResponse.data.err) {
+        //TODO error handling
+    }
+    return audioResponse.data.result;
+}
+
+
 
 //Works with java boot backend
 const test = async () => {
