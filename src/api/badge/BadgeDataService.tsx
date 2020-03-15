@@ -1,15 +1,13 @@
-import qs from "qs";
 import axios from 'axios';
 
 import axiosRequest from "../../utils/axiosRequest";
-import { isFunction } from "util";
 
 const get = async (badgeURL) => {
     const URL = '/b/' + badgeURL;
     const badgeData = await axiosRequest.get(URL);
     let imageData;
 
-    let audioData = await getAudio("5e6d6a12fa8bb29bf30cf92f");// badgeData.data.audioKey);
+    let audioData = await getAudio(badgeData.data.audioKey);
     //Do checks
     if (badgeData.data.imageKey) {
         imageData = await getImage(badgeData.data.imageKey);
