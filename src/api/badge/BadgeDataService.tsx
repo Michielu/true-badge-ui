@@ -2,23 +2,29 @@ import qs from "qs";
 import axios from 'axios';
 
 import axiosRequest from "../../utils/axiosRequest";
+import { isFunction } from "util";
 
 const get = async (badgeURL) => {
     const URL = '/b/' + badgeURL;
     const badgeData = await axiosRequest.get(URL);
-    let imageData, audioData;
+    let imageData;
 
-    //audioData = await getAudio(badgeData.data.audioKey);
+    let audioData = await getAudio("5e6d6a12fa8bb29bf30cf92f");// badgeData.data.audioKey);
     //Do checks
     if (badgeData.data.imageKey) {
         imageData = await getImage(badgeData.data.imageKey);
+    }
+
+    if (audioData.status != 200) {
+        //Do some checking
+        //Might do this elsewhere
     }
 
     const badgeRequirements = {
         name: badgeData.data.name,
         isValidBadgeURL: badgeData.data.isValidBadgeURL,
         image: imageData ? imageData.data.result[0] : null,
-        audio: audioData
+        audio: audioData.data.result[0]
     }
     return badgeRequirements;
 };
@@ -91,6 +97,12 @@ const storeAudio = async ({ blob }) => {
     return audioResponse.data.result;
 }
 
+const getAudio = async (audioID) => {
+    //TODO handle null images
+    const URL = '/audio/' + audioID;
+    const res = await axiosRequest.get(URL);
+    return res;
+};
 
 
 //Works with java boot backend

@@ -3,14 +3,9 @@ import React, { useState } from 'react';
 import { Button } from "react-bootstrap";
 
 function Badge(badgeData, audioArr) {
-    //TODO call for image 
-    //TODO call for audio
-    //TODO handle warnings signs if something is amiss
-    const [audio, setAudio] = audioArr;
-
-    const pronounceName = () => {
-        console.log("PRonouncing ", badgeData);
-        //TODO play "audio"
+    const pronounceName = async () => {
+        var snd = new Audio("data:audio/wav;base64," + badgeData.audio.audio);
+        snd.play();
     }
 
     return (
@@ -24,7 +19,7 @@ function Badge(badgeData, audioArr) {
                 }{/* <img className="tb-badge-image" src="https://lh3.googleusercontent.com/proxy/Ge1uHw6CySqerYZhvj2Qrg2Pp704TbdLrodA2E1EuL6IIFvUknlrU5-4Z41DNhvfVI4iwTwxE9gEzOuWkh0w33HUNsC4yP8aNUIqXs2YXD-H5gZYvw" alt="Profile Image"></img> */}
                 <h3>{badgeData.name}</h3>
                 <div className="tb-bottom-margin-10px">
-                    <Button disabled={!audio} variant="primary" onClick={pronounceName} block>Pronounce</Button>
+                    <Button disabled={!badgeData.audio} variant="primary" onClick={pronounceName} block>Pronounce</Button>
                 </div>
             </div>
         </div>
