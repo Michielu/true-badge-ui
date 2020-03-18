@@ -2,12 +2,67 @@ import axios from 'axios';
 
 import axiosRequest from "../../utils/axiosRequest";
 
+interface GetBadgeInterface {
+    data: GetBadgeInterfaceData
+};
+interface GetBadgeInterfaceData {
+    _id: string,
+    name: string,
+    imageKey: string | null
+    audioKey: string,
+    timestamp: number,
+    badgeURL: string,
+    expirationCode: number,
+    isValidBadgeURL: boolean
+};
+
+interface CreateBadgeInterface {
+    name: string,
+    imageID: string,
+    audioID: string,
+    time: number
+}
+
+interface GetMediaInterface {
+    data: { result: AudioResult[] } | { result: ImageResult[] },
+    status: number,
+    statusText: string
+}
+
+interface AudioResult {
+    _id: string,
+    description: string | null,
+    contentType: "image/jpeg" | "image/png",
+    size: number,
+    audio: any
+}
+
+interface ImageResult {
+    _id: string,
+    description: string | null,
+    contentType: "image/jpeg" | "image/png",
+    size: number,
+    img: any
+}
+
+interface BlobInterface {
+    size: number,
+    type: "audio/webm;codecs=opus"
+}
+
+// interface BadgeDataInterface{
+//     name: string,
+//     isValidBadgeURL: boolean,
+//     image: imageData ? imageData.data.result[0] : null,
+//     audio: audioData.data.result[0]
+// }
+
 const get = async (badgeURL) => {
     const URL = '/b/' + badgeURL;
-    const badgeData = await axiosRequest.get(URL);
-    let imageData;
+    const badgeData: GetBadgeInterface = await axiosRequest.get(URL);
+    let imageData: GetMediaInterface | undefined;
 
-    let audioData = await getAudio(badgeData.data.audioKey);
+    let audioData: GetMediaInterface = await getAudio(badgeData.data.audioKey);
     //Do checks
     if (badgeData.data.imageKey) {
         imageData = await getImage(badgeData.data.imageKey);
@@ -32,18 +87,19 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
     let audioID;
     if (badgeAudio) {
         audioID = await storeAudio(badgeAudio);
+        console.log("audioID: ", audioID)
     }
-    console.log("AudioID: ", audioID);
 
     //https://github.com/axios/axios/issues/318 for blobs
     let imageID;
     if (badgeImage) {
         imageID = await storeImage(badgeImage);
+        console.log("Image ID :", imageID);
     }
 
     const URL = "/badge/upload";
 
-    const data = {
+    const data: CreateBadgeInterface = {
         name: badgeName,
         imageID,
         audioID,
@@ -79,7 +135,6 @@ const getImage = async (imageID) => {
 
 const storeAudio = async ({ blob }) => {
     const URL = "audio/upload";
-    console.log("badgeAudio: ", blob);
     var bodyFormData = new FormData();
     bodyFormData.append('file', blob);
 
