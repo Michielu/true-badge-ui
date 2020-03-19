@@ -1,24 +1,16 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     useParams //TODO remove this import from this file
 } from "react-router-dom";
 
 import Badge from "./Badge";
 import BadgeDataService from '../../api/badge/BadgeDataService';
+import TbLoader from "../../partials/TbLoader/TbLoader";
 
 function loadingPage() {
     return (
         <div>
-            Loading...
-        </div>
-    )
-}
-
-function dataLoadedPage() {
-    return (
-        <div>
-            Loaded!!
-        {/* Add spinning wheel  */}
+            <TbLoader message="Loading..." />
         </div>
     )
 }
@@ -32,8 +24,6 @@ function invalidURLPage() {
     )
 }
 
-
-
 function errorPage() {
     return (
         <div>
@@ -42,7 +32,7 @@ function errorPage() {
     )
 }
 
-function handlePage(isBusy, badgeData, audioArr) {
+function handlePage(isBusy, badgeData) {
     if (isBusy) {
         return loadingPage();
     }
@@ -52,7 +42,7 @@ function handlePage(isBusy, badgeData, audioArr) {
     if (badgeData.err) {
         return errorPage();
     }
-    return Badge(badgeData, audioArr);
+    return Badge(badgeData);
 }
 
 function RenderBadge() {
@@ -60,14 +50,12 @@ function RenderBadge() {
     const [badgeURL, setBadgeURL] = useState("");
     const [badgeData, setBadgeData] = useState({});
 
-    // const [audio, setAudio] = useState(true);
-    const audioArr = useState(true);
     let url: any = useParams();
 
     useEffect(() => {
         //Set badgeID
         setBadgeURL(url.id);
-    }, [badgeURL]);
+    }, [badgeURL, url]);
 
     //TODO error handling
     useEffect(() => {
@@ -78,15 +66,14 @@ function RenderBadge() {
         }
 
         if (isBusy && url) {
-            //Get badge data
             callBadgeDataService();
         }
-    }, [isBusy]);
+    }, [isBusy, url]);
 
     // We can use the `useParams` hook here to access
     // the dynamic pieces of the URL.
 
-    return handlePage(isBusy, badgeData, audioArr);
+    return handlePage(isBusy, badgeData);
 }
 
 export default RenderBadge;
