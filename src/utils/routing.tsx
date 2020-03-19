@@ -6,7 +6,6 @@ import {
 import Home from "../components/Home/Home";
 import About from "../components/About/About";
 import CreateBadge from "../components/CreateBadge/CreateBadge";
-import TestComponent from "../components/TestComponent/TestComponent";
 import RenderBadge from "../components/RenderBadge/RenderBadge";
 
 
@@ -45,12 +44,5 @@ const routes = [
         path: "/create",
         component: CreateBadge,
         exact: true
-    },
-    {
-        path: "/count",
-        component: TestComponent,
-        exact: true
     }
-
-
 ];
