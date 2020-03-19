@@ -189,11 +189,10 @@ class TbForm extends React.Component<FormProps, State> {
                                                         <img
                                                             src={file.preview}
                                                             className="tb-preview-img"
-                                                            alt="Preview of uploaded image"
+                                                            alt="Preview"
                                                         />
                                                     </div>
                                                 </div>
-
                                             ))}
                                         </aside>
                                     </div>

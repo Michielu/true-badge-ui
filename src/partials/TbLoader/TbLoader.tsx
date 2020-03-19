@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Modal, Spinner } from "react-bootstrap";
 import { ModalProps } from 'react-bootstrap/Modal';
 
@@ -7,8 +7,6 @@ interface TbLoaderProps {
 }
 
 function TbLoader(props: ModalProps & TbLoaderProps) {
-    const [copySuccess, setCopySuccess] = useState('');
-
     return (
         <Modal show={props.show} onHide={props.onHide} backdrop="static">
             <Modal.Header>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert as Alert } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import { AlertProps } from 'react-bootstrap/Alert';
 
 import { ErrorMessageInterface } from "../../utils/interfaces";

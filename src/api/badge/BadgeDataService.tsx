@@ -68,7 +68,7 @@ const get = async (badgeURL) => {
         imageData = await getImage(badgeData.data.imageKey);
     }
 
-    if (audioData.status != 200) {
+    if (audioData.status !== 200) {
         //Do some checking
         //Might do this elsewhere
     }
