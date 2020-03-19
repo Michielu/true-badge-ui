@@ -10,7 +10,7 @@ import { ErrorMessageInterface } from "../../utils/interfaces";
 import TbAlert from "../TbAlerts/TbAlerts";
 import TbModal from "../TbModal/TbModal";
 import TbSpinner from "../TbLoader/TbLoader";
-import TbUploadImage from "./TbUploadImage";
+import TbUploadImage from "../TbUploadImage/TbUploadImage";
 
 interface FormProps {
     // text: string
@@ -163,16 +163,9 @@ class TbForm extends React.Component<FormProps, State> {
                             onChange={this.handleNameChange}
                         />
                     </div>
-                    {/* https://react-dropzone.js.org/ */}
-                    {/* TODO center img center. If img is long horizontally, it only gets the beginning 
-                        - have the user select a square of it.. like if I change my profile pic on fb
-                    */}
+
                     <div className="tb-form-field">
-                        {/* https://fengyuanchen.github.io/cropperjs/
-                    https://www.npmjs.com/package/cropperjs
-                    */}
                         <h3>Upload Image<small>(optional)</small></h3>
-                        {/* 5242880 == 5.2 mb */}
                         <TbUploadImage onDrop={this.onDrop}></TbUploadImage>
                     </div>
                     <div className="tb-form-field">

@@ -8,6 +8,15 @@ interface TbUploadImageProps {
 }
 
 function TbUploadImage(props: TbUploadImageProps) {
+    {/* 5242880 == 5.2 mb */ }
+    {/* TODO center img center. If img is long horizontally, it only gets the beginning 
+        - have the user select a square of it.. like if I change my profile pic on fb
+    */}
+    {/* 
+        TODO 
+        https://fengyuanchen.github.io/cropperjs/
+        https://www.npmjs.com/package/cropperjs
+    */}
     return (
         <Dropzone maxSize={5242880} multiple={false} accept='image/jpeg, image/png' onDrop={props.onDrop}>
             {({ getRootProps, getInputProps, acceptedFiles }) => {
