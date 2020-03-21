@@ -52,27 +52,23 @@ function CropImageModal(props: TbUploadImageProps & TbCropImageModalProp) {
         console.log("crop yo")
     }
 
-    // const _crop =()=>{
-    //     // image in dataUrl
-    //     console.log(this.refs.cropper.getCroppedCanvas().toDataURL());
-    // }
-
     return (
         <>
             <Modal show={imageProps.showCroppingModal} onHide={() => { console.log("hide modal") }} backdrop="static">
+                <Modal.Header closeButton>
+                    <Modal.Title>Image upload</Modal.Title>
+                </Modal.Header>
                 <Modal.Body>
-                    <p>Cropping aimage</p>
                     {console.log("pic: ", imageProps.image)}
-                    <img className="tb-badge-image" src={imageProps.image.preview} alt="Profile"></img>
-                    {/* <Cropper
+                    <Cropper
                         ref={cropper}
-                        src="{imageProps.image.preview}"
+                        src={imageProps.image.preview}
                         style={{ height: 400, width: '100%' }}
                         // Cropper.js options
-                        aspectRatio={16 / 9}
+                        aspectRatio={1 / 1}
                         guides={false}
                         crop={crop}
-                    /> */}
+                    />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={toggleModal}>
