@@ -1,19 +1,113 @@
 
-import React, { useState } from 'react';
-import { Button } from "react-bootstrap";
+import React, { useState, useEffect } from 'react';
+import { Button, Modal } from "react-bootstrap";
 import Dropzone from 'react-dropzone'
+import Cropper from 'react-cropper';
+import 'cropperjs/dist/cropper.css';
 
 
 interface TbUploadImageProps {
-    onDrop: (pic: any) => void
+    badgeImage: any[]
 }
+
+interface TbCropImageModalProp {
+    onImageDrop: (pic: any) => void
+}
+
 
 const cropper = React.createRef();
 
+function CropImageModal(props: TbUploadImageProps & TbCropImageModalProp) {
+    const imageProps = props.badgeImage[0];
+    const setImageProps = props.badgeImage[1];
+
+
+    useEffect(() => {
+        Object.assign(imageProps.image, {
+            preview: URL.createObjectURL(imageProps.image)
+        });
+        setImageProps(prev => ({
+            showCroppingModal: true,
+            image: imageProps.image
+        }));
+    }, [imageProps.image])
+
+    const toggleModal = function () {
+        setImageProps(prev => ({
+            showCroppingModal: !prev.showCroppingModal,
+            image: null
+        }));
+    }
+
+    const finishCropping = function () {
+        console.log("Finish cropping");
+        //Use onImageDrop
+        setImageProps({
+            showCroppingModal: false,
+            image: null //TODO set to image
+        })
+    }
+
+    const crop = () => {
+        console.log("crop yo")
+    }
+
+    // const _crop =()=>{
+    //     // image in dataUrl
+    //     console.log(this.refs.cropper.getCroppedCanvas().toDataURL());
+    // }
+
+    return (
+        <>
+            <Modal show={imageProps.showCroppingModal} onHide={() => { console.log("hide modal") }} backdrop="static">
+                <Modal.Body>
+                    <p>Cropping aimage</p>
+                    {console.log("pic: ", imageProps.image)}
+                    <img className="tb-badge-image" src={imageProps.image.preview} alt="Profile"></img>
+                    {/* <Cropper
+                        ref={cropper}
+                        src="{imageProps.image.preview}"
+                        style={{ height: 400, width: '100%' }}
+                        // Cropper.js options
+                        aspectRatio={16 / 9}
+                        guides={false}
+                        crop={crop}
+                    /> */}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={toggleModal}>
+                        Close
+                     </Button>
+                    <Button variant="primary" onClick={finishCropping}>
+                        Finish Cropping
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
+    )
+}
+
 function TbUploadImage(props: TbUploadImageProps) {
-    const [showModal, setShowModal] = useState(false);
+    const imageProps = props.badgeImage[0];
+    const setImageProps = props.badgeImage[1];
 
 
+    const openModal = function (img) {
+        setImageProps({
+            showCroppingModal: true,
+            image: img[0]
+        })
+    }
+
+    const onImageDrop = (pic) => {
+        Object.assign(pic[0], {
+            preview: URL.createObjectURL(pic[0])
+        });
+        setImageProps({
+            showCroppingModal: false,
+            image: pic
+        });
+    };
 
     {/* 5242880 == 5.2 mb */ }
     {/* TODO center img center. If img is long horizontally, it only gets the beginning 
@@ -24,9 +118,16 @@ function TbUploadImage(props: TbUploadImageProps) {
         https://fengyuanchen.github.io/cropperjs/
         https://www.npmjs.com/package/cropperjs
     */}
+    if (imageProps.showCroppingModal) {
+        const cropProp = {
+            ...props,
+            onImageDrop: onImageDrop
+        }
+        return CropImageModal(cropProp);
+    }
 
     return (
-        <Dropzone maxSize={5242880} multiple={false} accept='image/jpeg, image/png' onDrop={props.onDrop}>
+        <Dropzone maxSize={5242880} multiple={false} accept='image/jpeg, image/png' onDrop={openModal}>
             {({ getRootProps, getInputProps, acceptedFiles }) => {
                 return (
                     <div className="container">

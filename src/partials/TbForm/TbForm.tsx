@@ -12,7 +12,6 @@ import TbUploadImage from "../TbUploadImage/TbUploadImage";
 
 function TbForm() {
     const [badgeName, setBadgeName] = useState("");
-    const [badgeImage, setBadgeImage] = useState(null);
     const [recording, setRecording] = useState(false);
     const [hoveredIcon, setHoveredIcon] = useState(false);
     const [badgeAudio, setBadgeAudio] = useState({
@@ -32,6 +31,12 @@ function TbForm() {
     //TbModal
     const copyUrlSuccessMessage = useState('');
 
+    //TbUploadImage
+    const badgeImage = useState({
+        showCroppingModal: false,
+        image: null
+    })
+
     //TODO use tooltip for additional information
     //Name
     const handleNameChange = (event) => {
@@ -39,12 +44,7 @@ function TbForm() {
     };
 
     //Image
-    const onDrop = (pic) => {
-        Object.assign(pic[0], {
-            preview: URL.createObjectURL(pic[0])
-        });
-        setBadgeImage(pic);
-    };
+
 
     //Audio
     const toggleAudioRecord = () => {
@@ -81,12 +81,12 @@ function TbForm() {
 
         const status = await BadgeDataService.create({
             badgeAudio: badgeAudio.audio,
-            badgeImage,
+            badgeImage: badgeImage[0].image,
             badgeName
         });
         console.log("Submit Badge!", status, {
             badgeAudio: badgeAudio.audio,
-            badgeImage,
+            badgeImage: badgeImage[0].image,
             badgeName
         });
 
@@ -150,7 +150,7 @@ function TbForm() {
 
                 <div className="tb-form-field">
                     <h3>Upload Image<small>(optional)</small></h3>
-                    {/* <TbUploadImage onDrop={onDrop}></TbUploadImage> */}
+                    <TbUploadImage badgeImage={badgeImage}></TbUploadImage>
                 </div>
                 <div className="tb-form-field">
                     <h3>Record name</h3>

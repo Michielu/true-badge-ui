@@ -4,10 +4,13 @@ import { ModalProps } from 'react-bootstrap/Modal';
 
 interface TbModalProps {
     badgeUrl: string,
+    copyUrlSuccessMessage: any[]
+
 }
 
 function TbModal(props: ModalProps & TbModalProps) {
-    const [copySuccess, setCopySuccess] = useState('');
+    const copyUrlSuccessMessage = props.copyUrlSuccessMessage[0];
+    const setCopyUrlSuccessMessage = props.copyUrlSuccessMessage[0];;
 
     const textAreaRef = useRef(null);
 
@@ -16,7 +19,7 @@ function TbModal(props: ModalProps & TbModalProps) {
         textAreaRef.current.select();
         document.execCommand('copy');
         e.target.focus();
-        setCopySuccess('Badge URL Copied!');
+        setCopyUrlSuccessMessage('Badge URL Copied!');
     };
 
     return (
@@ -34,7 +37,7 @@ function TbModal(props: ModalProps & TbModalProps) {
                     />
                     <br />
                     <br />
-                    {copySuccess ? <Alert variant="success">{copySuccess}</Alert> : null}
+                    {copyUrlSuccessMessage ? <Alert variant="success">{copyUrlSuccessMessage}</Alert> : null}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={props.onHide}>
