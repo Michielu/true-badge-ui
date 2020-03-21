@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Alert, Button, FormControl } from 'react-bootstrap';
 import { ReactMic } from 'react-mic';
@@ -30,147 +30,153 @@ interface State {
     displaySpinner: boolean
 };
 
-//TODO make this into function with hook
-class TbForm extends React.Component<FormProps, State> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            badgeName: "",
-            badgeImage: null,
-            badgeAudio: null,
-            isRecording: false,
-            audioError: false,
-            hoveredIcon: false,
-            hasError: false,
-            errorMessages: { errorMessage: "", errorMessageLong: "" },
-            badgeUrl: "",
-            displayModal: false,
-            displaySpinner: false
-        };
-        this.onDrop = this.onDrop.bind(this);
-        this.submitBadge = this.submitBadge.bind(this);
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.toggleRecord = this.toggleRecord.bind(this);
-        this.onData = this.onData.bind(this);
-        this.onStop = this.onStop.bind(this);
-        this.playBlob = this.playBlob.bind(this);
-        this.toggleIconCLass = this.toggleIconCLass.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-    }
+function TbForm() {
+
+    const [badgeName, setBadgeName] = useState("");
+    const [badgeImage, setBadgeImage] = useState(null);
+    const [badgeAudio, setBadgeAudio] = useState({
+        audio: { blob: null },
+        audioError: false
+    });
+
+    const [createBadge, setCreateBadge] = useState({
+        error: false, //used to be hasError
+        errorMessages: { errorMessage: "", errorMessageLong: "" },
+        displaySpinner: false
+    }); //What error?
+
+    const [recording, setRecording] = useState(false);
+    const [hoveredIcon, setHoveredIcon] = useState(false);
+    const [badgeModal, setBadgeModal] = useState({
+        url: "",
+        displayModal: false
+    });
+
+
     //TODO use tooltip for additional information
 
     //Name
-    handleNameChange = (event) => {
-        this.setState({ badgeName: event.target.value });
-    }
+    const handleNameChange = (event) => {
+        setBadgeName(event.target.value)
+    };
 
     //Image
-    onDrop = (pic) => {
+    const onDrop = (pic) => {
         Object.assign(pic[0], {
             preview: URL.createObjectURL(pic[0])
-        })
-        this.setState({
-            badgeImage: pic,
         });
-    }
+        setBadgeImage(pic);
+    };
 
     //Audio
-    toggleRecord = () => {
-        this.setState(prevState => ({
-            isRecording: !prevState.isRecording
-        }));
-    }
+    const toggleAudioRecord = () => {
+        setRecording(prevRecording => !prevRecording);
+    };
 
-    onData = (recordedBlob) => {
+    const onData = (recordedBlob) => {
         // console.log('chunk of real-time data is: ', recordedBlob);
     }
 
-    onStop = (recordedBlob) => {
+    const stopRecording = (recordedBlob) => {
         console.log('recordedBlob is: ', recordedBlob);
 
         //TODO check what the limit I set on the server is and update this
         if (recordedBlob.stopTime - recordedBlob.startTime > 5000) {
-            this.setState({
+            setBadgeAudio({
+                audio: { blob: null },
                 audioError: true
-            })
+            });
         } else {
-            this.setState({
-                badgeAudio: recordedBlob,
+            setBadgeAudio({
+                audio: recordedBlob,
                 audioError: false
-            })
+            });
         }
     }
 
-    submitBadge = async () => {
-        this.setState({
+    const submitBadge = async () => {
+        setCreateBadge({
+            error: false,
+            errorMessages: { errorMessage: "", errorMessageLong: "" },
             displaySpinner: true
         });
-        const status = await BadgeDataService.create(this.state);
-        console.log("Submit Badge!", status, this.state);
+
+        const status = await BadgeDataService.create({
+            badgeAudio: badgeAudio.audio,
+            badgeImage,
+            badgeName
+        });
+        console.log("Submit Badge!", status, {
+            badgeAudio: badgeAudio.audio,
+            badgeImage,
+            badgeName
+        });
 
         if (status.data.errorMessage) {
-            this.setState({
-                hasError: true,
+            setCreateBadge({
+                error: true,
                 errorMessages: status.data,
                 displaySpinner: false
-            })
+            });
         } else {
-            this.setState({
-                hasError: false,
-                badgeUrl: window.location.protocol + "//" + window.location.host + "/b/" + status.data.result.badgeURL, //TODO get localhost from elsewhere
-                displayModal: true,
+            setCreateBadge({
+                error: false,
+                errorMessages: { errorMessage: "", errorMessageLong: "" },
                 displaySpinner: false
+            });
+            setBadgeModal({
+                url: window.location.protocol + "//" + window.location.host + "/b/" + status.data.result.badgeURL, //TODO get localhost from elsewhere
+                displayModal: true
             })
         }
     }
 
-    closeModal = () => {
-        this.setState({
+    const closeBadgeURLModal = () => {
+        setBadgeModal({
+            url: window.location.protocol + "//" + window.location.host + "/b/" + status.data.result.badgeURL, //TODO get localhost from elsewhere
             displayModal: false
         })
     }
-    playBlob = () => {
-        const url = URL.createObjectURL(this.state.badgeAudio.blob);
+
+    const playBlob = () => {
+        const url = URL.createObjectURL(badgeAudio.audio.blob);
         const tmp = new Audio(url);
         tmp.play();
     }
 
-    toggleIconCLass = () => {
-        this.setState((prevState) => ({
-            hoveredIcon: !prevState.hoveredIcon
-        }))
-    }
+    const toggleIconCLass = () => {
+        setHoveredIcon(prevState => !prevState)
+    };
 
-    render() {
-        return (
-            <div className="row tb-center">
-                <div id="tb-form" className="col-12 col-md-6 tb-center">
-                    <div className="tb-form-field">
-                        <TbAlert variant="danger" errorMessages={this.state.errorMessages} hasError={this.state.hasError}></TbAlert>
-                        <TbModal show={this.state.displayModal} onHide={this.closeModal} badgeUrl={this.state.badgeUrl}></TbModal>
-                        <TbSpinner show={this.state.displaySpinner} message="Please wait.. generating badge URL" />
-                        <h3>Input Name</h3>
-                        {/* TODO look into getting value without onChange. 
+    return (
+        <div className="row tb-center">
+            <div id="tb-form" className="col-12 col-md-6 tb-center">
+                <div className="tb-form-field">
+                    <TbAlert variant="danger" errorMessages={createBadge.errorMessages} hasError={createBadge.error}></TbAlert>
+                    <TbModal show={badgeModal.displayModal} onHide={closeBadgeURLModal} badgeUrl={badgeModal.url}></TbModal>
+                    <TbSpinner show={createBadge.displaySpinner} message="Please wait.. generating badge URL" />
+                    <h3>Input Name</h3>
+                    {/* TODO look into getting value without onChange. 
                         Maybe form, maybe different react package 
                         
                         Also, look up how to not rerender entire page with just one state change
                         Debug: Add console.log in Dropzone. Every text change rerenders it
                         */}
-                        <FormControl
-                            placeholder="Your name"
-                            aria-label="Your name"
-                            aria-describedby="basic-addon2"
-                            onChange={this.handleNameChange}
-                        />
-                    </div>
+                    <FormControl
+                        placeholder="Your name"
+                        aria-label="Your name"
+                        aria-describedby="basic-addon2"
+                        onChange={handleNameChange}
+                    />
+                </div>
 
-                    <div className="tb-form-field">
-                        <h3>Upload Image<small>(optional)</small></h3>
-                        <TbUploadImage onDrop={this.onDrop}></TbUploadImage>
-                    </div>
-                    <div className="tb-form-field">
-                        <h3>Record name</h3>
-                        {/* TODOs
+                <div className="tb-form-field">
+                    <h3>Upload Image<small>(optional)</small></h3>
+                    <TbUploadImage onDrop={onDrop}></TbUploadImage>
+                </div>
+                <div className="tb-form-field">
+                    <h3>Record name</h3>
+                    {/* TODOs
                             - Styling
                             - Time limit
                             - Counter
@@ -179,32 +185,31 @@ class TbForm extends React.Component<FormProps, State> {
                             - change audioError to audioErrorCode
                             - Fix onhover/onClick mic styling on mobile
                         */}
-                        <div onClick={this.toggleRecord}>
-                            <ReactMic
-                                record={this.state.isRecording}
-                                className="sound-wave"
-                                onStop={this.onStop}
-                                onData={this.onData}
-                                strokeColor="#098fe0"
-                                backgroundColor="#e6e7e8"
-                            />
-                        </div>
-                        <div onMouseEnter={this.toggleIconCLass} onMouseLeave={this.toggleIconCLass} className={this.state.hoveredIcon ? 'tb-icon-hover tb-center' : 'tb-icon tb-center'}>
-                            <FaMicrophoneAlt size={52} onClick={this.toggleRecord} />
-                        </div>
-                        <div>
-                            {this.state.isRecording ? <p>Recording in progress</p> : null}
-                        </div>
+                    <div onClick={toggleRecord}>
+                        <ReactMic
+                            record={isRecording}
+                            className="sound-wave"
+                            stopRecording={stopRecording}
+                            onData={onData}
+                            strokeColor="#098fe0"
+                            backgroundColor="#e6e7e8"
+                        />
                     </div>
-                    <Alert show={this.state.audioError} variant="danger">Audio is too long</Alert>
-                    {this.state.badgeAudio ? <Button variant="outline-info" onClick={this.playBlob} block>Play recording</Button> : null}
+                    <div onMouseEnter={toggleIconCLass} onMouseLeave={toggleIconCLass} className={hoveredIcon ? 'tb-icon-hover tb-center' : 'tb-icon tb-center'}>
+                        <FaMicrophoneAlt size={52} onClick={toggleRecord} />
+                    </div>
+                    <div>
+                        {isRecording ? <p>Recording in progress</p> : null}
+                    </div>
+                </div>
+                <Alert show={audioError} variant="danger">Audio is too long</Alert>
+                {badgeAudio ? <Button variant="outline-info" onClick={playBlob} block>Play recording</Button> : null}
 
-                    <Button disabled={!(this.state.badgeName && this.state.badgeAudio)} variant="primary" onClick={this.submitBadge} block>Submit</Button>
-                    {this.state.badgeUrl ? <p>Badge URL is: {this.state.badgeUrl}</p> : null}
-                </div >
+                <Button disabled={!(badgeName && badgeAudio)} variant="primary" onClick={submitBadge} block>Submit</Button>
+                {badgeUrl ? <p>Badge URL is: {badgeUrl}</p> : null}
             </div >
+        </div >
 
-        )
-    }
+    )
 };
 export default TbForm;
