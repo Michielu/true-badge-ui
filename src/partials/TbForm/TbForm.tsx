@@ -1,60 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { Alert, Button, FormControl } from 'react-bootstrap';
 import { ReactMic } from 'react-mic';
 import { FaMicrophoneAlt } from 'react-icons/fa';
 
 import BadgeDataService from "../../api/badge/BadgeDataService";
-import { ErrorMessageInterface } from "../../utils/interfaces";
-
 import TbAlert from "../TbAlerts/TbAlerts";
 import TbModal from "../TbModal/TbModal";
 import TbSpinner from "../TbLoader/TbLoader";
 import TbUploadImage from "../TbUploadImage/TbUploadImage";
 
-interface FormProps {
-    // text: string
-}
-
-interface State {
-    badgeName: string,
-    badgeAudio: any,
-    badgeImage: any,
-    isRecording: boolean,
-    audioError: boolean,
-    hoveredIcon: boolean,
-    hasError: boolean,
-    errorMessages: ErrorMessageInterface,
-    badgeUrl: string,
-    displayModal: boolean,
-    displaySpinner: boolean
-};
-
 function TbForm() {
-
     const [badgeName, setBadgeName] = useState("");
     const [badgeImage, setBadgeImage] = useState(null);
+    const [recording, setRecording] = useState(false);
+    const [hoveredIcon, setHoveredIcon] = useState(false);
     const [badgeAudio, setBadgeAudio] = useState({
         audio: { blob: null },
         audioError: false
     });
-
-    const [createBadge, setCreateBadge] = useState({
-        error: false, //used to be hasError
-        errorMessages: { errorMessage: "", errorMessageLong: "" },
-        displaySpinner: false
-    }); //What error?
-
-    const [recording, setRecording] = useState(false);
-    const [hoveredIcon, setHoveredIcon] = useState(false);
     const [badgeModal, setBadgeModal] = useState({
         url: "",
         displayModal: false
     });
+    const [createBadge, setCreateBadge] = useState({
+        error: false, //used to be hasError
+        errorMessages: { errorMessage: "", errorMessageLong: "" },
+        displaySpinner: false
+    });
 
+    //TbModal
+    const copyUrlSuccessMessage = useState('');
 
     //TODO use tooltip for additional information
-
     //Name
     const handleNameChange = (event) => {
         setBadgeName(event.target.value)
@@ -132,19 +110,19 @@ function TbForm() {
     }
 
     const closeBadgeURLModal = () => {
-        setBadgeModal({
-            url: window.location.protocol + "//" + window.location.host + "/b/" + status.data.result.badgeURL, //TODO get localhost from elsewhere
+        setBadgeModal(prev => ({
+            url: prev.url,
             displayModal: false
-        })
+        }))
     }
 
-    const playBlob = () => {
+    const playAudio = () => {
         const url = URL.createObjectURL(badgeAudio.audio.blob);
         const tmp = new Audio(url);
         tmp.play();
     }
 
-    const toggleIconCLass = () => {
+    const toggleHoverIcon = () => {
         setHoveredIcon(prevState => !prevState)
     };
 
@@ -153,7 +131,7 @@ function TbForm() {
             <div id="tb-form" className="col-12 col-md-6 tb-center">
                 <div className="tb-form-field">
                     <TbAlert variant="danger" errorMessages={createBadge.errorMessages} hasError={createBadge.error}></TbAlert>
-                    <TbModal show={badgeModal.displayModal} onHide={closeBadgeURLModal} badgeUrl={badgeModal.url}></TbModal>
+                    <TbModal show={badgeModal.displayModal} onHide={closeBadgeURLModal} badgeUrl={badgeModal.url} copyUrlSuccessMessage={copyUrlSuccessMessage}></TbModal>
                     <TbSpinner show={createBadge.displaySpinner} message="Please wait.. generating badge URL" />
                     <h3>Input Name</h3>
                     {/* TODO look into getting value without onChange. 
@@ -172,7 +150,7 @@ function TbForm() {
 
                 <div className="tb-form-field">
                     <h3>Upload Image<small>(optional)</small></h3>
-                    <TbUploadImage onDrop={onDrop}></TbUploadImage>
+                    {/* <TbUploadImage onDrop={onDrop}></TbUploadImage> */}
                 </div>
                 <div className="tb-form-field">
                     <h3>Record name</h3>
@@ -185,31 +163,29 @@ function TbForm() {
                             - change audioError to audioErrorCode
                             - Fix onhover/onClick mic styling on mobile
                         */}
-                    <div onClick={toggleRecord}>
+                    <div onClick={toggleAudioRecord}>
                         <ReactMic
-                            record={isRecording}
+                            record={recording}
                             className="sound-wave"
-                            stopRecording={stopRecording}
+                            onStop={stopRecording}
                             onData={onData}
                             strokeColor="#098fe0"
                             backgroundColor="#e6e7e8"
                         />
                     </div>
-                    <div onMouseEnter={toggleIconCLass} onMouseLeave={toggleIconCLass} className={hoveredIcon ? 'tb-icon-hover tb-center' : 'tb-icon tb-center'}>
-                        <FaMicrophoneAlt size={52} onClick={toggleRecord} />
+                    <div onMouseEnter={toggleHoverIcon} onMouseLeave={toggleHoverIcon} className={hoveredIcon ? 'tb-icon-hover tb-center' : 'tb-icon tb-center'}>
+                        <FaMicrophoneAlt size={52} onClick={toggleAudioRecord} />
                     </div>
                     <div>
-                        {isRecording ? <p>Recording in progress</p> : null}
+                        {recording ? <p>Recording in progress</p> : null}
                     </div>
                 </div>
-                <Alert show={audioError} variant="danger">Audio is too long</Alert>
-                {badgeAudio ? <Button variant="outline-info" onClick={playBlob} block>Play recording</Button> : null}
-
-                <Button disabled={!(badgeName && badgeAudio)} variant="primary" onClick={submitBadge} block>Submit</Button>
-                {badgeUrl ? <p>Badge URL is: {badgeUrl}</p> : null}
+                <Alert show={badgeAudio.audioError} variant="danger">Audio is too long</Alert>
+                {badgeAudio.audio.blob ? <Button variant="outline-info" onClick={playAudio} block>Play recording</Button> : null}
+                <Button disabled={!(badgeName && badgeAudio.audio.blob)} variant="primary" onClick={submitBadge} block>Submit</Button>
+                {badgeModal.url ? <p>Badge URL is: {badgeModal.url}</p> : null}
             </div >
         </div >
-
     )
 };
 export default TbForm;
