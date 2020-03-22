@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
@@ -6,12 +6,18 @@ import 'cropperjs/dist/cropper.css';
 import { TbUploadImageProps, TbCropperProp } from '../../utils/interfaces';
 
 
-
-const cropper = React.createRef();
-
 function TbCropper(props: TbUploadImageProps & TbCropperProp) {
     const imageProps = props.badgeImage[0];
     const setImageProps = props.badgeImage[1];
+    const cropperRef = useRef({
+        cropper: null,
+        getCroppedCanvas: () => {
+            return {
+                toDataURL: () => { }
+            }
+        }
+
+    });
 
 
     useEffect(() => {
@@ -36,30 +42,34 @@ function TbCropper(props: TbUploadImageProps & TbCropperProp) {
         //Use onImageDrop
         setImageProps({
             showCroppingModal: false,
-            image: null //TODO set to image
+            image: cropperRef.current.getCroppedCanvas().toDataURL()
         })
     }
 
-    const crop = () => {
-        console.log("crop yo")
-    }
+    // const crop = () => {
+    //     console.log("crop yo", cropperRef.current.getCroppedCanvas())
+    //     console.log("crop yo2", cropperRef.current.getCroppedCanvas().toDataURL())
+
+    // }
+
 
     return (
         <>
-            <Modal show={imageProps.showCroppingModal} onHide={() => { console.log("hide modal") }} backdrop="static">
+            <Modal show={imageProps.showCroppingModal} onHide={toggleModal} backdrop="static">
                 <Modal.Header closeButton>
                     <Modal.Title>Image upload</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {console.log("pic: ", imageProps.image)}
                     <Cropper
-                        ref={cropper}
+                        ref={cropperRef}
                         src={imageProps.image.preview}
                         style={{ height: 400, width: '100%' }}
                         // Cropper.js options
                         aspectRatio={1 / 1}
-                        guides={false}
-                        crop={crop}
+                        // guides={false}
+                        // crop={crop}
+                        rotatable={true}
                     />
                 </Modal.Body>
                 <Modal.Footer>
