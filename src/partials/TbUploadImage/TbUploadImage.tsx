@@ -48,29 +48,30 @@ function TbUploadImage(props: TbUploadImageProps) {
 
     return (
         <Dropzone maxSize={5242880} multiple={false} accept='image/jpeg, image/png' onDrop={openModal}>
-            {({ getRootProps, getInputProps, acceptedFiles }) => {
+            {({ getRootProps, getInputProps }) => {
                 return (
                     <div className="container">
                         <div {...getRootProps({ className: 'dropzone' })}>
                             <input {...getInputProps()} />
                             <Button variant="outline-primary" size="lg">Upload</Button>
                         </div>
-                        <aside className="tb-center tb-preview-container">
-                            {acceptedFiles.map((file: any, i: number) => (
-                                <div key={"img" + i}>
+                        {imageProps.image &&
+                            <aside className="tb-center tb-preview-container">
+                                <div >
                                     <div>
                                         <small>Preview</small>
                                     </div>
-                                    <div className="tb-preview" key={file.name}>
+                                    <div className="tb-preview" >
+                                        {console.log("Cropped image is: ", imageProps.image)}
                                         <img
-                                            src={file.preview}
+                                            src={imageProps.image.toDataURL()}
                                             className="tb-preview-img"
                                             alt="Preview"
                                         />
                                     </div>
                                 </div>
-                            ))}
-                        </aside>
+                            </aside>
+                        }
                     </div>
                 );
             }}

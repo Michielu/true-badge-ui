@@ -42,15 +42,14 @@ function TbCropper(props: TbUploadImageProps & TbCropperProp) {
         //Use onImageDrop
         setImageProps({
             showCroppingModal: false,
-            image: cropperRef.current.getCroppedCanvas().toDataURL()
+            image: cropperRef.current.getCroppedCanvas()
         })
     }
 
-    // const crop = () => {
-    //     console.log("crop yo", cropperRef.current.getCroppedCanvas())
-    //     console.log("crop yo2", cropperRef.current.getCroppedCanvas().toDataURL())
-
-    // }
+    const crop = () => {
+        console.log("crop yo", cropperRef.current.getCroppedCanvas())
+        console.log("crop yo2", cropperRef.current.getCroppedCanvas().toDataURL())
+    }
 
 
     return (
@@ -67,7 +66,7 @@ function TbCropper(props: TbUploadImageProps & TbCropperProp) {
                         style={{ height: 400, width: '100%' }}
                         // Cropper.js options
                         aspectRatio={1 / 1}
-                        // guides={false}
+                        guides={true}
                         // crop={crop}
                         rotatable={true}
                     />
