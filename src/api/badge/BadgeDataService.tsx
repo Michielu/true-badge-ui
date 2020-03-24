@@ -112,7 +112,7 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
 const storeImage = async (badgeImage) => {
     const URL = "image/upload";
     var bodyFormData = new FormData();
-    bodyFormData.append('file', badgeImage[0]);
+    bodyFormData.append('file', badgeImage);
 
     const imageResponse = await axios({
         method: 'post',

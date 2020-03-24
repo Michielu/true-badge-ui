@@ -1,5 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
+
 import { Button, Modal } from "react-bootstrap";
 import Dropzone from 'react-dropzone'
 import 'cropperjs/dist/cropper.css';
@@ -49,6 +49,11 @@ function TbUploadImage(props: TbUploadImageProps) {
     return (
         <Dropzone maxSize={5242880} multiple={false} accept='image/jpeg, image/png' onDrop={openModal}>
             {({ getRootProps, getInputProps }) => {
+                let preview = "";
+                if (imageProps.image) {
+                    preview = URL.createObjectURL(imageProps.image);
+                }
+
                 return (
                     <div className="container">
                         <div {...getRootProps({ className: 'dropzone' })}>
@@ -62,9 +67,8 @@ function TbUploadImage(props: TbUploadImageProps) {
                                         <small>Preview</small>
                                     </div>
                                     <div className="tb-preview" >
-                                        {console.log("Cropped image is: ", imageProps.image)}
                                         <img
-                                            src={imageProps.image.toDataURL()}
+                                            src={preview}
                                             className="tb-preview-img"
                                             alt="Preview"
                                         />

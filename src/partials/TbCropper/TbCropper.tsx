@@ -13,10 +13,10 @@ function TbCropper(props: TbUploadImageProps & TbCropperProp) {
         cropper: null,
         getCroppedCanvas: () => {
             return {
-                toDataURL: () => { }
+                toDataURL: () => { },
+                toBlob: (blob) => { }
             }
         }
-
     });
 
 
@@ -37,12 +37,12 @@ function TbCropper(props: TbUploadImageProps & TbCropperProp) {
         }));
     }
 
-    const finishCropping = function () {
-        console.log("Finish cropping");
-        //Use onImageDrop
-        setImageProps({
-            showCroppingModal: false,
-            image: cropperRef.current.getCroppedCanvas()
+    const finishCropping = async function () {
+        cropperRef.current.getCroppedCanvas().toBlob((imageBlob) => {
+            setImageProps({
+                showCroppingModal: false,
+                image: imageBlob
+            })
         })
     }
 
