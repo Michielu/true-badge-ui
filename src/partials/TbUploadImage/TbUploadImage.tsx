@@ -15,7 +15,8 @@ function TbUploadImage(props: TbUploadImageProps) {
     const openModal = function (img) {
         setImageProps({
             showCroppingModal: true,
-            image: img[0]
+            image: img[0],
+            type: img[0].type
         })
     }
 
@@ -23,10 +24,11 @@ function TbUploadImage(props: TbUploadImageProps) {
         Object.assign(pic[0], {
             preview: URL.createObjectURL(pic[0])
         });
-        setImageProps({
+        setImageProps(prev => ({
             showCroppingModal: false,
-            image: pic
-        });
+            image: pic,
+            type: prev.type
+        }));
     };
 
     {/* 5242880 == 5.2 mb */ }

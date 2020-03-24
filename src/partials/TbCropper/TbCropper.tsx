@@ -14,7 +14,7 @@ function TbCropper(props: TbUploadImageProps & TbCropperProp) {
         getCroppedCanvas: () => {
             return {
                 toDataURL: () => { },
-                toBlob: (blob) => { }
+                toBlob: (callback, type) => { }
             }
         }
     });
@@ -26,24 +26,27 @@ function TbCropper(props: TbUploadImageProps & TbCropperProp) {
         });
         setImageProps(prev => ({
             showCroppingModal: true,
-            image: imageProps.image
+            image: imageProps.image,
+            type: prev.type
         }));
     }, [imageProps.image])
 
     const toggleModal = function () {
         setImageProps(prev => ({
             showCroppingModal: !prev.showCroppingModal,
-            image: null
+            image: null,
+            type: prev.type
         }));
     }
 
     const finishCropping = async function () {
         cropperRef.current.getCroppedCanvas().toBlob((imageBlob) => {
-            setImageProps({
+            setImageProps(prev => ({
                 showCroppingModal: false,
-                image: imageBlob
-            })
-        })
+                image: imageBlob,
+                type: prev.type
+            }))
+        }, imageProps.type);
     }
 
     const crop = () => {
