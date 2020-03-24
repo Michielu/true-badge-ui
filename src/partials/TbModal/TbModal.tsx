@@ -10,7 +10,7 @@ interface TbModalProps {
 
 function TbModal(props: ModalProps & TbModalProps) {
     const copyUrlSuccessMessage = props.copyUrlSuccessMessage[0];
-    const setCopyUrlSuccessMessage = props.copyUrlSuccessMessage[0];;
+    const setCopyUrlSuccessMessage = props.copyUrlSuccessMessage[1];
 
     const textAreaRef = useRef(null);
 
