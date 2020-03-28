@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import { Button, Modal } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import Dropzone from 'react-dropzone'
 import 'cropperjs/dist/cropper.css';
 
@@ -31,15 +31,7 @@ function TbUploadImage(props: TbUploadImageProps) {
         }));
     };
 
-    {/* 5242880 == 5.2 mb */ }
-    {/* TODO center img center. If img is long horizontally, it only gets the beginning 
-        - have the user select a square of it.. like if I change my profile pic on fb
-    */}
-    {/* 
-        TODO 
-        https://fengyuanchen.github.io/cropperjs/
-        https://www.npmjs.com/package/cropperjs
-    */}
+    /* 5242880 == 5.2 mb */
     if (imageProps.showCroppingModal) {
         const cropProp = {
             ...props,

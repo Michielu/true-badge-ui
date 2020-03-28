@@ -29,7 +29,7 @@ function TbCropper(props: TbUploadImageProps & TbCropperProp) {
             image: imageProps.image,
             type: prev.type
         }));
-    }, [imageProps.image])
+    }, [imageProps.image, setImageProps])
 
     const toggleModal = function () {
         setImageProps(prev => ({
@@ -49,10 +49,10 @@ function TbCropper(props: TbUploadImageProps & TbCropperProp) {
         }, imageProps.type);
     }
 
-    const crop = () => {
-        console.log("crop yo", cropperRef.current.getCroppedCanvas())
-        console.log("crop yo2", cropperRef.current.getCroppedCanvas().toDataURL())
-    }
+    // const crop = () => {
+    //     console.log("crop yo", cropperRef.current.getCroppedCanvas())
+    //     console.log("crop yo2", cropperRef.current.getCroppedCanvas().toDataURL())
+    // }
 
 
     return (
