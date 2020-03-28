@@ -1,4 +1,7 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# True Badge
+
+Purpose: Assist in eliminate those awkward introductions at meetings/interviews by creating a platform that can assist in learning the correct pronunciation for names.
+
 
 ## Available Scripts
 
