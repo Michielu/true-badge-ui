@@ -8,8 +8,8 @@ interface GetBadgeInterface {
 interface GetBadgeInterfaceData {
     _id: string,
     name: string,
-    imageKey: string | null
-    audioKey: string,
+    imageID: string | null
+    audioID: string,
     timestamp: number,
     badgeURL: string,
     expirationCode: number,
@@ -62,10 +62,10 @@ const get = async (badgeURL) => {
     const badgeData: GetBadgeInterface = await axiosRequest.get(URL);
     let imageData: GetMediaInterface | undefined;
 
-    let audioData: GetMediaInterface = await getAudio(badgeData.data.audioKey);
+    let audioData: GetMediaInterface = await getAudio(badgeData.data.audioID);
     //Do checks
-    if (badgeData.data.imageKey) {
-        imageData = await getImage(badgeData.data.imageKey);
+    if (badgeData.data.imageID) {
+        imageData = await getImage(badgeData.data.imageID);
     }
 
     if (audioData.status !== 200) {
