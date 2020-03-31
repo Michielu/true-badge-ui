@@ -3,6 +3,12 @@
 Purpose: Assist in eliminate those awkward introductions at meetings/interviews by creating a platform that can assist in learning the correct pronunciation for names.
 
 
+### Different Server Enviroment
+To running against local server: keep it as is
+To run against Heroku server: set `proxy` in `package.json` to `"https://true-badge-web.herokuapp.com"`
+To run against local server: set `proxy` in `package.json` to `"http://localhost:4000"`
+
+
 ## Available Scripts
 
 In the project directory, you can run:
