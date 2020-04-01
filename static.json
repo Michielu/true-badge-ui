@@ -1,0 +1,13 @@
+{
+    "root": ".",
+    "proxies": {
+        "/api/": {
+            "origin": "https://true-badge-web.herokuapp.com"
+        }
+    },
+    "headers": {
+        "/**": {
+            "Access-Control-Allow-Origin": "*"
+        }
+    }
+}
