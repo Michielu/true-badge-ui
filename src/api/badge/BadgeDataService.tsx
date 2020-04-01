@@ -58,7 +58,7 @@ interface BlobInterface {
 // }
 
 const get = async (badgeURL) => {
-    const URL = '/b/' + badgeURL;
+    const URL = '/api/b/' + badgeURL;
     const badgeData: GetBadgeInterface = await axiosRequest.get(URL);
     let imageData: GetMediaInterface | undefined;
 
