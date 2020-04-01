@@ -58,7 +58,7 @@ interface BlobInterface {
 // }
 
 const get = async (badgeURL) => {
-    const URL = '/api/b/' + badgeURL;
+    const URL = addPrefixForProd('b/' + badgeURL);
     const badgeData: GetBadgeInterface = await axiosRequest.get(URL);
     let imageData: GetMediaInterface | undefined;
 
@@ -97,7 +97,7 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
         console.log("Image ID :", imageID);
     }
 
-    const URL = "/badge/upload";
+    const URL = addPrefixForProd("/badge/upload");
 
     const data: CreateBadgeInterface = {
         name: badgeName,
@@ -110,7 +110,7 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
 };
 
 const storeImage = async (badgeImage) => {
-    const URL = "image/upload";
+    const URL = addPrefixForProd("image/upload");
     var bodyFormData = new FormData();
     bodyFormData.append('file', badgeImage);
 
@@ -128,13 +128,13 @@ const storeImage = async (badgeImage) => {
 
 const getImage = async (imageID) => {
     //TODO handle null images
-    const URL = '/image/' + imageID;
+    const URL = addPrefixForProd('image/' + imageID);
     const res = await axiosRequest.get(URL);
     return res;
 };
 
 const storeAudio = async ({ blob }) => {
-    const URL = "audio/upload";
+    const URL = addPrefixForProd("audio/upload");
     var bodyFormData = new FormData();
     bodyFormData.append('file', blob);
 
@@ -151,10 +151,17 @@ const storeAudio = async ({ blob }) => {
 }
 
 const getAudio = async (audioID) => {
-    const URL = '/audio/' + audioID;
+    const URL = addPrefixForProd('audio/' + audioID);
     const res = await axiosRequest.get(URL);
     return res;
 };
+
+const addPrefixForProd = (url) => {
+    if (process.env.NODE_ENV === 'production') {
+        return '/api/' + url;
+    }
+    return url;
+}
 
 const BadgeDataService = {
     get,
