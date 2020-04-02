@@ -1,12 +1,14 @@
 import React from "react";
 import {
     Switch,
-    Route
+    Route,
+    Redirect
 } from "react-router-dom";
 import Home from "../components/Home/Home";
 import About from "../components/About/About";
 import CreateBadge from "../components/CreateBadge/CreateBadge";
 import RenderBadge from "../components/RenderBadge/RenderBadge";
+import ErrorPage from "../components/Error/Error";
 
 
 export default function Routing() {
@@ -43,6 +45,11 @@ const routes = [
     {
         path: "/create",
         component: CreateBadge,
+        exact: true
+    },
+    {
+        path: "/error",
+        component: ErrorPage,
         exact: true
     }
 ];
