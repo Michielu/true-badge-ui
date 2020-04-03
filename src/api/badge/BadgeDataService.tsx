@@ -91,30 +91,37 @@ const get = async (badgeURL) => {
 };
 
 const create = async ({ badgeAudio, badgeImage, badgeName }) => {
-    //TODO Store badgeAudio. Return Id
-    let audioID;
-    if (badgeAudio) {
-        audioID = await storeAudio(badgeAudio);
-        console.log("audioID: ", audioID)
-    }
+    try {
+        let audioID;
+        if (badgeAudio) {
+            audioID = await storeAudio(badgeAudio);
+            console.log("audioID: ", audioID)
+        }
 
-    //https://github.com/axios/axios/issues/318 for blobs
-    let imageID;
-    if (badgeImage) {
-        imageID = await storeImage(badgeImage);
-        console.log("Image ID :", imageID);
-    }
+        //https://github.com/axios/axios/issues/318 for blobs
+        let imageID;
+        if (badgeImage) {
+            imageID = await storeImage(badgeImage);
+            console.log("Image ID :", imageID);
+        }
 
-    const URL = addPrefixForProd("/badge/upload");
+        const URL = addPrefixForProd("/badge/upload");
 
-    const data: CreateBadgeInterface = {
-        name: badgeName,
-        imageID,
-        audioID,
-        time: Date.now()
+        const data: CreateBadgeInterface = {
+            name: badgeName,
+            imageID,
+            audioID,
+            time: Date.now()
+        }
+        const response = await axiosRequest.post(URL, data);
+        return response;
+    } catch{
+        return {
+            "data": {
+                "errorMessage": "404"
+            }
+        }
     }
-    const response = await axiosRequest.post(URL, data);
-    return response;
 };
 
 const storeImage = async (badgeImage) => {
