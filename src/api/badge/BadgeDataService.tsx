@@ -59,27 +59,35 @@ interface BlobInterface {
 
 const get = async (badgeURL) => {
     const URL = addPrefixForProd('b/' + badgeURL);
-    const badgeData: GetBadgeInterface = await axiosRequest.get(URL);
-    let imageData: GetMediaInterface | undefined;
 
-    let audioData: GetMediaInterface = await getAudio(badgeData.data.audioID);
-    //Do checks
-    if (badgeData.data.imageID) {
-        imageData = await getImage(badgeData.data.imageID);
-    }
+    let badgeData;
+    try {
+        badgeData = await axiosRequest.get(URL);
 
-    if (audioData.status !== 200) {
-        //Do some checking
-        //Might do this elsewhere
-    }
+        let imageData: GetMediaInterface | undefined;
 
-    const badgeRequirements = {
-        name: badgeData.data.name,
-        isValidBadgeURL: badgeData.data.isValidBadgeURL,
-        image: imageData ? imageData.data.result[0] : null,
-        audio: audioData.data.result[0]
+        let audioData: GetMediaInterface = await getAudio(badgeData.data.audioID);
+        //Do checks
+        if (badgeData.data.imageID) {
+            imageData = await getImage(badgeData.data.imageID);
+        }
+
+        if (audioData.status !== 200) {
+            //Do some checking
+            //Might do this elsewhere
+        }
+
+        const badgeRequirements = {
+            name: badgeData.data.name,
+            isValidBadgeURL: badgeData.data.isValidBadgeURL,
+            image: imageData ? imageData.data.result[0] : null,
+            audio: audioData.data.result[0]
+        }
+
+        return badgeRequirements;
+    } catch{
+        return { "code": 404 };
     }
-    return badgeRequirements;
 };
 
 const create = async ({ badgeAudio, badgeImage, badgeName }) => {

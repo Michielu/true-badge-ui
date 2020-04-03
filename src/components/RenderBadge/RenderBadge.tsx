@@ -6,6 +6,8 @@ import {
 import Badge from "./Badge";
 import BadgeDataService from '../../api/badge/BadgeDataService';
 import TbLoader from "../../partials/TbLoader/TbLoader";
+import ErrorPage from '../Error/Error';
+import redirect from '../../utils/navigator/index';
 
 function loadingPage() {
     return (
@@ -24,23 +26,19 @@ function invalidURLPage() {
     )
 }
 
-function errorPage() {
-    return (
-        <div>
-            <h3>Error occured</h3>
-        </div>
-    )
-}
-
 function handlePage(isBusy, badgeData) {
     if (isBusy) {
         return loadingPage();
     }
+    if (badgeData.code === 404) {
+        //Changes URL, but since this is using BrowswerRouter,
+        //the page won't render the /error page
+        //TODO find less hacky way
+        redirect('/error');
+        return ErrorPage();
+    }
     if (!badgeData.isValidBadgeURL) {
         return invalidURLPage();
-    }
-    if (badgeData.err) {
-        return errorPage();
     }
     return Badge(badgeData);
 }
