@@ -58,6 +58,7 @@ interface BlobInterface {
 // }
 
 const get = async (badgeURL) => {
+    //need the leading '/' or local ui adds another '/b' 
     const URL = addPrefixForProd('/b/' + badgeURL);
 
     let badgeData;
@@ -142,7 +143,7 @@ const storeImage = async (badgeImage) => {
 }
 
 const getImage = async (imageID) => {
-    //TODO handle null images
+    //need the leading '/' or local ui adds another '/b' 
     const URL = addPrefixForProd('/image/' + imageID);
     const res = await axiosRequest.get(URL);
     return res;
@@ -166,6 +167,7 @@ const storeAudio = async ({ blob }) => {
 }
 
 const getAudio = async (audioID) => {
+    //need the leading '/' or local ui adds another '/b' 
     const URL = addPrefixForProd('/audio/' + audioID);
     const res = await axiosRequest.get(URL);
     return res;
