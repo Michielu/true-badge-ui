@@ -20,7 +20,7 @@ interface CreateBadgeInterface {
     name: string,
     imageID: string,
     audioID: string,
-    time: number
+    timestamp: number
 }
 
 interface GetMediaInterface {
@@ -112,14 +112,14 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
             name: badgeName,
             imageID,
             audioID,
-            time: Date.now()
+            timestamp: Date.now()
         }
         const response = await axiosRequest.post(URL, data);
         return response;
     } catch{
         return {
             "data": {
-                "errorMessage": "404"
+                "errorMessage": "Error - server error"
             }
         }
     }
