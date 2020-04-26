@@ -2,6 +2,8 @@
 
 Purpose: Assist in eliminate those awkward introductions at meetings/interviews by creating a platform that can assist in learning the correct pronunciation for names.
 
+## Run it in browser: 
+https://true-badge-ui.herokuapp.com
 
 ### Different Server Enviroment
 To running against local server: keep it as is
