@@ -3,7 +3,8 @@ import React from 'react';
 import { TbCard, TbJumbotron, TbButton } from "../../partials";
 
 const Home: React.FunctionComponent<{}> = () => {
-    const quote: string = '"A person’s name is to him or her the sweetest and most important sound in any language." - Dale Carnegie';
+    const text1: string = 'Eliminate uncomfortable introductions at meetings and interviews.';
+    const text2: string = "True Badge is a free, simple, platform that anyone can use to have their name pronounced the way they want to be called."
     const welcomeText: string = "Welcome to True Badge";
 
     const buttonProps = [{
@@ -13,7 +14,7 @@ const Home: React.FunctionComponent<{}> = () => {
     return (
         <div >
             <TbJumbotron text={welcomeText}></TbJumbotron>
-            <TbCard text={quote}>
+            <TbCard texts={[text1, text2]}>
             </TbCard>
             <br />
             <div className="tb-center">
@@ -22,6 +23,5 @@ const Home: React.FunctionComponent<{}> = () => {
         </div>
     )
 };
-
 
 export default Home;
