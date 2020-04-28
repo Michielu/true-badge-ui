@@ -1,61 +1,7 @@
 import axios from 'axios';
 
 import axiosRequest from "../../utils/axiosRequest";
-
-interface GetBadgeInterface {
-    data: GetBadgeInterfaceData
-};
-interface GetBadgeInterfaceData {
-    _id: string,
-    name: string,
-    imageID: string | null
-    audioID: string,
-    timestamp: number,
-    badgeURL: string,
-    expirationCode: number,
-    isValidBadgeURL: boolean
-};
-
-interface CreateBadgeInterface {
-    name: string,
-    imageID: string,
-    audioID: string,
-    timestamp: number
-}
-
-interface GetMediaInterface {
-    data: { result: AudioResult[] } | { result: ImageResult[] },
-    status: number,
-    statusText: string
-}
-
-interface AudioResult {
-    _id: string,
-    description: string | null,
-    contentType: "image/jpeg" | "image/png",
-    size: number,
-    audio: any
-}
-
-interface ImageResult {
-    _id: string,
-    description: string | null,
-    contentType: "image/jpeg" | "image/png",
-    size: number,
-    img: any
-}
-
-interface BlobInterface {
-    size: number,
-    type: "audio/webm;codecs=opus"
-}
-
-// interface BadgeDataInterface{
-//     name: string,
-//     isValidBadgeURL: boolean,
-//     image: imageData ? imageData.data.result[0] : null,
-//     audio: audioData.data.result[0]
-// }
+import { GetMediaInterface, CreateBadgeInterface } from "../../utils/interfaces";
 
 const get = async (badgeURL) => {
     //need the leading '/' or local ui adds another '/b' 
@@ -96,14 +42,12 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
         let audioID;
         if (badgeAudio) {
             audioID = await storeAudio(badgeAudio);
-            console.log("audioID: ", audioID)
         }
 
         //https://github.com/axios/axios/issues/318 for blobs
         let imageID;
         if (badgeImage) {
             imageID = await storeImage(badgeImage);
-            console.log("Image ID :", imageID);
         }
 
         const URL = addPrefixForProd("/badge/upload");
