@@ -1,17 +1,16 @@
-
-
 import React from 'react';
 
-
 interface TbCTAProp {
-    value: string,
-    onClick: any
+    buttonProps: {
+        href: string,
+        value: string
+    }
 }
 
 const TbCTA: React.FunctionComponent<TbCTAProp> = (props) => {
     return (
         <div className="button_cont row" >
-            <a className="tb-cta" href="add-website-here" target="_blank" rel="nofollow"><span>Create Badge</span></a>
+            <a className="tb-cta" href={props.buttonProps.href}><span>{props.buttonProps.value}</span></a>
         </div>
     )
 };
