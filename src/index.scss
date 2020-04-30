@@ -131,8 +131,12 @@ body {
   margin-bottom: 15px;
 }
 
-.tb-margin-15{
-  margin: 15px;
+.tb-margin-5{
+  margin: 5px
+}
+
+.tb-margin-25{
+  margin: 25px;
 }
 
 .tb-margin-side-none{
@@ -152,6 +156,10 @@ body {
   text-align: center;
 }
 
+.tb-text-align-left{
+  text-align: left;
+}
+
 .tb-width-100{
   width: 100%
 }
@@ -162,12 +170,9 @@ body {
 
 .tb-cta {
   border-radius: 4px;
-  // background: linear-gradient(to right,$tb-primary,$tb-color-mono1) !important;
   background: linear-gradient(to right,$tb-color-mono1, $tb-color-mono2) !important;
-  // background:green !important;
-  // canva.com/colors/color-wheel
   border: none;
-  color: #FFFFFF;
+  color: $white;
   text-align: center;
   font-size: 22px;
   padding: 16px;
@@ -191,7 +196,7 @@ body {
 }
 .tb-cta:hover span {
   padding-right: 25px;
-  color: white
+  color:$white
 }
 .tb-cta:hover span:after {
   opacity: 1;

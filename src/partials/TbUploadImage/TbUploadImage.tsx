@@ -63,7 +63,7 @@ function TbUploadImage(props: TbUploadImageProps) {
                                     <div className="tb-preview" >
                                         <img
                                             src={preview}
-                                            className="tb-preview-img"
+                                            className="tb-height-100"
                                             alt="Preview"
                                         />
                                     </div>
