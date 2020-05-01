@@ -131,13 +131,18 @@ body {
   margin-bottom: 15px;
 }
 
+.tb-margin-25{
+  margin: 25px;
+}
+
+.tb-margin-10{
+  margin: 10px
+}
+
 .tb-margin-5{
   margin: 5px
 }
 
-.tb-margin-25{
-  margin: 25px;
-}
 
 .tb-margin-side-none{
   margin-left: 0px;
@@ -205,4 +210,32 @@ body {
 .navbar-brand{
   letter-spacing: 0.1em;
   padding-left: .625rem;
+}
+
+@keyframes flickerAnimation {
+  0%   { opacity:1; }
+  50%  { opacity:.3; }
+  100% { opacity:1; }
+}
+@-o-keyframes flickerAnimation{
+  0%   { opacity:1; }
+  50%  { opacity:.3; }
+  100% { opacity:1; }
+}
+@-moz-keyframes flickerAnimation{
+  0%   { opacity:1; }
+  50%  { opacity:.3; }
+  100% { opacity:1; }
+}
+@-webkit-keyframes flickerAnimation{
+  0%   { opacity:1; }
+  50%  { opacity:.3; }
+  100% { opacity:1; }
+}
+.animate-flicker {
+   -webkit-animation: flickerAnimation 1.5s infinite;
+   -moz-animation: flickerAnimation 1.5s infinite;
+   -o-animation: flickerAnimation 1.5s infinite;
+    animation: flickerAnimation 1.5s infinite;
+    color: $tb-primary
 }

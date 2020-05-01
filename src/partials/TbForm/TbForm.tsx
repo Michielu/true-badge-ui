@@ -173,15 +173,16 @@ function TbForm() {
                             backgroundColor="#e6e7e8"
                         />
                     </div>
-                    <div onMouseEnter={toggleHoverIcon} onMouseLeave={toggleHoverIcon} className={hoveredIcon ? 'tb-icon-hover tb-center' : 'tb-icon tb-center'}>
+                    <div onMouseEnter={toggleHoverIcon} onMouseLeave={toggleHoverIcon} className={hoveredIcon ? 'tb-icon-hover tb-center tb-margin-10' : 'tb-icon tb-center tb-margin-10'}>
                         <FaMicrophoneAlt size={52} onClick={toggleAudioRecord} />
                     </div>
                     <div>
-                        {recording ? <p>Recording in progress</p> : null}
+                        {recording ? <p className="animate-flicker">Recording</p> : null}
                     </div>
+                    <Alert show={badgeAudio.audioError} variant="danger">Audio is too long</Alert>
+                    {badgeAudio.audio.blob ? <Button variant="outline-info" onClick={playAudio} block>Play recording</Button> : null}
                 </div>
-                <Alert show={badgeAudio.audioError} variant="danger">Audio is too long</Alert>
-                {badgeAudio.audio.blob ? <Button variant="outline-info" onClick={playAudio} block>Play recording</Button> : null}
+
                 <Button disabled={!(badgeName && badgeAudio.audio.blob)} variant="primary" onClick={submitBadge} block>Submit</Button>
                 {badgeModal.url ? <p>Badge URL is: {badgeModal.url}</p> : null}
             </div >
