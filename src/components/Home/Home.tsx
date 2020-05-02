@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { TbCard, TbCTA, TbJumbotron, TbButton } from "../../partials";
+import { TbCard, TbCTA, TbJumbotron } from "../../partials";
 
 const Home: React.FunctionComponent<{}> = () => {
     const text1: string = 'Eliminate uncomfortable introductions at meetings and interviews.';
     const text2: string = "True Badge is a free, simple, platform that anyone can use to have their name pronounced the way they want it."
     const welcomeText: string = "Welcome to True Badge";
 
-    const buttonProps = [{
+    const buttonProps = {
         value: "Create Badge",
         href: "/create"
-    }]
+    }
     return (
         <div >
             <TbJumbotron text={welcomeText}></TbJumbotron>
@@ -18,8 +18,7 @@ const Home: React.FunctionComponent<{}> = () => {
             </TbCard>
             <br />
             <div className="tb-center">
-                {/* <TbButton buttons={buttonProps}></TbButton> */}
-                <TbCTA value="Create Badge" onClick={() => { console.log("HI mom") }} />
+                <TbCTA buttonProps={buttonProps} />
             </div>
         </div>
     )
