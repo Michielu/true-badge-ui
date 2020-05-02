@@ -158,14 +158,16 @@ function TbForm() {
                 <div className="tb-form-field">
                     <h3>Record name <TbOverlay overlayType={OverlayType.TOOLTIP} message="Five seconds maximum"></TbOverlay></h3>
                     {/* TODOs
-                            - Styling
                             - Counter
-                            - Size limit
                             - Red dot symolizing recording
                             - change audioError to audioErrorCode
                             - Fix onhover/onClick mic styling on mobile
                         */}
-                    <div onClick={toggleAudioRecord}>
+                    <div onMouseEnter={toggleHoverIcon} onMouseLeave={toggleHoverIcon} className={hoveredIcon ? 'tb-icon-hover tb-center tb-margin-10' : 'tb-icon tb-center tb-margin-10'}>
+                        <FaMicrophoneAlt size={52} onClick={toggleAudioRecord} />
+                    </div>
+                    {/* <div style={recording ? { visibility: "visible", height: "100" } : { visibility: "hidden", height: "0" }} > */}
+                    <div style={{ visibility: "hidden", height: 0 }} >
                         <ReactMic
                             record={recording}
                             className="sound-wave"
@@ -174,9 +176,6 @@ function TbForm() {
                             strokeColor="#098fe0"
                             backgroundColor="#e6e7e8"
                         />
-                    </div>
-                    <div onMouseEnter={toggleHoverIcon} onMouseLeave={toggleHoverIcon} className={hoveredIcon ? 'tb-icon-hover tb-center tb-margin-10' : 'tb-icon tb-center tb-margin-10'}>
-                        <FaMicrophoneAlt size={52} onClick={toggleAudioRecord} />
                     </div>
                     <div>
                         {recording ? <p className="animate-flicker">Recording</p> : null}
