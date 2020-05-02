@@ -3,12 +3,16 @@ import React, { useState } from 'react';
 import { Alert, Button, FormControl } from 'react-bootstrap';
 import { ReactMic } from 'react-mic';
 import { FaMicrophoneAlt } from 'react-icons/fa';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 
 import BadgeDataService from "../../api/badge/BadgeDataService";
 import TbAlert from "../TbAlerts/TbAlerts";
 import TbModal from "../TbModal/TbModal";
+import TbOverlay from "../TbOverlay/TbOverlay";
 import TbSpinner from "../TbLoader/TbLoader";
 import TbUploadImage from "../TbUploadImage/TbUploadImage";
+import { OverlayType } from '../../utils/enums';
+
 
 function TbForm() {
     const [badgeName, setBadgeName] = useState("");
@@ -37,7 +41,6 @@ function TbForm() {
         image: null
     })
 
-    //TODO use tooltip for additional information
     //Name
     const handleNameChange = (event) => {
         setBadgeName(event.target.value)
@@ -149,14 +152,13 @@ function TbForm() {
                 </div>
 
                 <div className="tb-form-field">
-                    <h3>Upload Image<small>(optional)</small></h3>
+                    <h3>Upload Image <TbOverlay overlayType={OverlayType.TOOLTIP} message="image is optional"></TbOverlay></h3>
                     <TbUploadImage badgeImage={badgeImage}></TbUploadImage>
                 </div>
                 <div className="tb-form-field">
-                    <h3>Record name</h3>
+                    <h3>Record name <TbOverlay overlayType={OverlayType.TOOLTIP} message="Five seconds maximum"></TbOverlay></h3>
                     {/* TODOs
                             - Styling
-                            - Time limit
                             - Counter
                             - Size limit
                             - Red dot symolizing recording
