@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Alert, Button, FormControl } from 'react-bootstrap';
 import { ReactMic } from 'react-mic';
 import { FaMicrophoneAlt } from 'react-icons/fa';
-import { AiOutlineInfoCircle } from 'react-icons/ai';
 
 import BadgeDataService from "../../api/badge/BadgeDataService";
 import TbAlert from "../TbAlerts/TbAlerts";
@@ -136,7 +135,7 @@ function TbForm() {
                     <TbAlert variant="danger" errorMessages={createBadge.errorMessages} hasError={createBadge.error}></TbAlert>
                     <TbModal show={badgeModal.displayModal} onHide={closeBadgeURLModal} badgeUrl={badgeModal.url} copyUrlSuccessMessage={copyUrlSuccessMessage}></TbModal>
                     <TbSpinner show={createBadge.displaySpinner} message="Please wait.. generating badge URL" />
-                    <h3>Input Name</h3>
+                    <h3>Name <TbOverlay overlayType={OverlayType.TOOLTIP} message="Required"></TbOverlay></h3>
                     {/* TODO look into getting value without onChange. 
                         Maybe form, maybe different react package 
                         
@@ -152,11 +151,11 @@ function TbForm() {
                 </div>
 
                 <div className="tb-form-field">
-                    <h3>Upload Image <TbOverlay overlayType={OverlayType.TOOLTIP} message="image is optional"></TbOverlay></h3>
+                    <h3>Image <TbOverlay overlayType={OverlayType.TOOLTIP} message="Optional"></TbOverlay></h3>
                     <TbUploadImage badgeImage={badgeImage}></TbUploadImage>
                 </div>
                 <div className="tb-form-field">
-                    <h3>Record name <TbOverlay overlayType={OverlayType.TOOLTIP} message="Five seconds maximum"></TbOverlay></h3>
+                    <h3>Record name <TbOverlay overlayType={OverlayType.TOOLTIP} message="Required. Five seconds maximum"></TbOverlay></h3>
                     {/* TODOs
                             - Counter
                             - Red dot symolizing recording

@@ -9,10 +9,10 @@ import TbLoader from "../../partials/TbLoader/TbLoader";
 import ErrorPage from '../Error/Error';
 import redirect from '../../utils/navigator/index';
 
-function loadingPage() {
+function loadingPage(isBusy) {
     return (
         <div>
-            <TbLoader message="Loading..." />
+            <TbLoader show={isBusy} message="Loading..." />
         </div>
     )
 }
@@ -28,7 +28,7 @@ function invalidURLPage() {
 
 function handlePage(isBusy, badgeData) {
     if (isBusy) {
-        return loadingPage();
+        return loadingPage(isBusy);
     }
     if (badgeData.code === 404) {
         //Changes URL, but since this is using BrowswerRouter,

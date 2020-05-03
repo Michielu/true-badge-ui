@@ -1,6 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { OverlayTrigger, Overlay, Button, Tooltip, Popover } from "react-bootstrap";
-// import { OverlayProps } from 'react-bootstrap/Overlay';
+import React from 'react';
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { OverlayType } from '../../utils/enums';
 
@@ -21,7 +20,7 @@ function renderTooltip(props) {
 }
 
 function renderOverlay(type) {
-    if (type == OverlayType.TOOLTIP) {
+    if (type === OverlayType.TOOLTIP) {
         return renderTooltip
     }
     return <div>Invalid</div>
