@@ -37,7 +37,7 @@ const get = async (badgeURL) => {
     }
 };
 
-const create = async ({ badgeAudio, badgeImage, badgeName }) => {
+const create = async ({ badgeAudio, badgeImage, badgeName, badgeEmail }) => {
     try {
         let audioID;
         if (badgeAudio) {
@@ -56,7 +56,9 @@ const create = async ({ badgeAudio, badgeImage, badgeName }) => {
             name: badgeName,
             imageID,
             audioID,
-            timestamp: Date.now()
+            timestamp: Date.now(),
+            email: badgeEmail,
+            expirationCode: 1
         }
         const response = await axiosRequest.post(URL, data);
         return response;

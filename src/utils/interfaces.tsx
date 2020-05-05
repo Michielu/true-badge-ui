@@ -29,7 +29,9 @@ export interface CreateBadgeInterface {
     name: string,
     imageID: string,
     audioID: string,
-    timestamp: number
+    timestamp: number,
+    email: string,
+    expirationCode: number
 };
 
 export interface GetMediaInterface {

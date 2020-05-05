@@ -15,6 +15,7 @@ import { OverlayType } from '../../utils/enums';
 
 function TbForm() {
     const [badgeName, setBadgeName] = useState("");
+    const [badgeEmail, setBadgeEmail] = useState("");
     const [recording, setRecording] = useState(false);
     const [hoveredIcon, setHoveredIcon] = useState(false);
     const [badgeAudio, setBadgeAudio] = useState({
@@ -42,11 +43,12 @@ function TbForm() {
 
     //Name
     const handleNameChange = (event) => {
-        setBadgeName(event.target.value)
+        setBadgeName(event.target.value);
     };
 
-    //Image
-
+    const handleEmailChange = (e) => {
+        setBadgeEmail(e.target.value);
+    }
 
     //Audio
     const toggleAudioRecord = () => {
@@ -84,7 +86,8 @@ function TbForm() {
         const status = await BadgeDataService.create({
             badgeAudio: badgeAudio.audio,
             badgeImage: badgeImage[0].image,
-            badgeName
+            badgeName,
+            badgeEmail
         });
         console.log("Submit Badge!", status, {
             badgeAudio: badgeAudio.audio,
@@ -182,7 +185,15 @@ function TbForm() {
                     <Alert show={badgeAudio.audioError} variant="danger">Audio is too long</Alert>
                     {badgeAudio.audio.blob ? <Button variant="outline-info" onClick={playAudio} block>Play recording</Button> : null}
                 </div>
-
+                <div className="tb-form-field">
+                    <h3>Email <TbOverlay overlayType={OverlayType.TOOLTIP} message="Optional. To notify you on updates about your Badge."></TbOverlay></h3>
+                    <FormControl
+                        placeholder="Email"
+                        aria-label="Email"
+                        aria-describedby="basic-addon2"
+                        onChange={handleEmailChange}
+                    />
+                </div>
                 <Button disabled={!(badgeName && badgeAudio.audio.blob)} variant="primary" onClick={submitBadge} block>Submit</Button>
                 {badgeModal.url ? <p>Badge URL is: {badgeModal.url}</p> : null}
             </div >
