@@ -47,6 +47,9 @@ body {
   .tb-center #tb-form{
     width: 90%;
   }
+  .navbar-nav{
+    padding-left: .625rem;
+  }
 }
 
 .tb-quote {
@@ -243,3 +246,4 @@ body {
     animation: flickerAnimation 1.5s infinite;
     color: $tb-primary
 }
+
