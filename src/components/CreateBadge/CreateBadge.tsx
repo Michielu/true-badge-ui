@@ -11,7 +11,6 @@ const CreateBadge: React.FunctionComponent<{}> = () => {
             <TbForm></TbForm>
         </div>
     );
-
 }
 
 export default CreateBadge;

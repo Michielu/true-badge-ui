@@ -2,8 +2,8 @@ import React from 'react';
 import { TbJumbotron, TbCTA } from '../../partials/';
 
 const About: React.FunctionComponent<{}> = () => {
-    const personal: string = "My name, Michielu(pronounced Mitchel), is an English name tweaked to make it easier for my Japanese relatives to pronounce. It has never been pronounced correctly without help. "
-    const personal2: string = "There are plenty of other people like me, people with ethnic or unique names, that I would like to help with this application."
+    const personal: string = "My name, Michielu (pronounced Mitchel), is an English name tweaked to make it easier for my Japanese relatives to pronounce. It has never been pronounced correctly without help. "
+    const personal2: string = "There are plenty of other people like me, people with ethnic or unique names, that could use this website."
     const pageTitle: string = "About";
     const buttonProps = {
         value: "Create Badge",

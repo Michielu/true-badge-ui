@@ -1,6 +1,5 @@
 @import "styles/placeholders/placeholders";
 
-
 @mixin icons($color){
     @extend %tb-box-shawdow;
     color: $color;

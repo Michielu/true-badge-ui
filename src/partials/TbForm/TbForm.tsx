@@ -194,8 +194,8 @@ function TbForm() {
                         onChange={handleEmailChange}
                     />
                 </div>
-                <Button disabled={!(badgeName && badgeAudio.audio.blob)} variant="primary" onClick={submitBadge} block>Submit</Button>
-                {badgeModal.url ? <p>Badge URL is: {badgeModal.url}</p> : null}
+                <Button disabled={!(badgeName && badgeAudio.audio.blob) || badgeModal.url} variant="primary" onClick={submitBadge} block>Submit</Button>
+                {badgeModal.url ? <p>Badge URL is: <i>{badgeModal.url}</i></p> : null}
             </div >
         </div >
     )

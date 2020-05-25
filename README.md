@@ -2,7 +2,7 @@
 
 Goal: Eliminate uncomfortable introductions at meetings and interviews. 
 
-True Badge creates a free, simple, platform for everybody to be able to pronounce names the way the individual <i>wants</i> to be called. 
+True Badge creates a free, simple platform for everyone to be able to pronounce names the way the individual <i>wants</i> to be called. 
 
 How it works:
 1) Create a Badge -- copy your unique personal URL
