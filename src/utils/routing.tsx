@@ -26,6 +26,7 @@ export default function Routing() {
                     <Route key={index} path={route.path} exact={route.exact} component={route.component} />
                 ))}
                 <Route path="/b/:id" children={<RenderBadge />}></Route>
+                <Route path="/u/:id" children={<RenderBadge />}></Route>
             </Switch>
         </div>
     );
@@ -54,6 +55,16 @@ const routes = [
     },
     {
         path: "/error",
+        component: ErrorPage,
+        exact: true
+    },
+    {
+        path: "/login",
+        component: ErrorPage,
+        exact: true
+    },
+    {
+        path: "/register",
         component: ErrorPage,
         exact: true
     }
