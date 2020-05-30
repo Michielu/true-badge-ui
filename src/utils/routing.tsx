@@ -9,6 +9,7 @@ import CreateBadge from "../components/CreateBadge/CreateBadge";
 import HowItWorks from "../components/HowItWorks/HowItWorks";
 import RenderBadge from "../components/RenderBadge/RenderBadge";
 import ErrorPage from "../components/Error/Error";
+import Auth from "../components/Auth/Auth";
 
 
 export default function Routing() {
@@ -60,12 +61,12 @@ const routes = [
     },
     {
         path: "/login",
-        component: ErrorPage,
+        component: Auth,
         exact: true
     },
     {
         path: "/register",
-        component: ErrorPage,
+        component: Auth,
         exact: true
     }
 ];
