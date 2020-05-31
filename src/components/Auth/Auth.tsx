@@ -3,10 +3,14 @@ import {
     useParams //TODO remove this import from this file
 } from "react-router-dom";
 
+
+
 function renderAuth(isBusy, isLogin) {
     return (
         <div>
-            <p>Hello mellow</p>
+            <h3>{isLogin ? "Login" : "Register"}</h3>
+
+            <p>Input </p>
         </div>
     )
 }
@@ -14,11 +18,16 @@ function renderAuth(isBusy, isLogin) {
 
 function Auth() {
     const [isBusy, setBusy] = useState(true);
-    const [isLogin, setLogin] = useState(false)
-    const [creds, setCreds] = useState()
+    const [isLogin, setLogin] = useState(false);
+    //Have creds be of an creds object? Interface: login and register
+    //Reseach if possible/good practice
+    const [creds, setCreds] = useState();
+
 
 
     let url: any = useParams();
+
+    //Check if creds are cached
 
     // useEffect(() => {
     //     //Set badgeID
