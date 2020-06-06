@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TbLoader from "../../partials/TbLoader/TbLoader";
+import TbAuth from "../../partials/TbAuth/TbAuth";
+import TbSessionStorage from "../../utils/storage/sessionStorage";
 
 import {
     useParams //TODO remove this import from this file
@@ -12,14 +14,19 @@ function renderAuth(isBusy, isLogin, setLogin) {
     if (isBusy) {
         return <TbLoader show={isBusy} message="Loading..." />
     }
+    const username = TbSessionStorage.getItem("username");
+    const password = TbSessionStorage.getItem("password");
+    const wrong = TbSessionStorage.getItem("asdf");
     if (isLogin) {
         return (<div>
             <h3>"Login"</h3>
-
+            {/* <p>{username}</p>
+            <p>{password}</p>
+            <p>{wrong}</p> */}
+            <p>{isLogin}</p>
             <div>
-                <p>Login </p>
+                <TbAuth isLogin></TbAuth>
                 <small>Don't have an account? <p onClick={() => {
-                    console.log("hi")
                     setLogin(!isLogin)
                 }}>Sign up</p></small>
             </div>
@@ -29,8 +36,13 @@ function renderAuth(isBusy, isLogin, setLogin) {
     return (
         <div>
             <h3>"Register"</h3>
+            {/* <p>{username}</p>
+            <p>{password}</p>
+            <p>w{wrong}</p> */}
+            <p>{isLogin}</p>
+
             <div>
-                <p>Register </p>
+                <TbAuth isLogin></TbAuth>
                 <small>Already have an account? <p onClick={() => {
                     console.log("hi")
                     setLogin(!isLogin)
@@ -79,8 +91,11 @@ function Auth() {
 
     useEffect(() => {
         async function setWait() {
-            await setTimeout(function () { alert("Hello"); }, 3000);
-            setBusy(false);
+            await setTimeout(function () {
+                TbSessionStorage.setItem('username', "mimimama");
+                TbSessionStorage.setItem('password', "password123");
+                setBusy(false);
+            }, 1500);
         }
         if (isBusy) {
             setWait();
