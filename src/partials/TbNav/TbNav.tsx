@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Navbar, Nav } from 'react-bootstrap';
-import ExampleBadge from '../../utils/exampleBadge';
+import ExampleBadgeURI from '../../utils/exampleBadge';
 
 interface NavProps {
 }
@@ -18,7 +18,7 @@ const TbNav: React.FunctionComponent<NavProps> = () => {
                         <Nav.Link href="/create">Create</Nav.Link>
                         <Nav.Link href="/how">How it works</Nav.Link>
                         <Nav.Link href="/about">About</Nav.Link>
-                        <Nav.Link href={ExampleBadge}>Example</Nav.Link>
+                        <Nav.Link href={"b/" + ExampleBadgeURI}>Example</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
