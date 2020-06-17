@@ -195,7 +195,7 @@ function TbForm() {
                     />
                 </div>
                 <Button disabled={!(badgeName && badgeAudio.audio.blob) || badgeModal.url} variant="primary" onClick={submitBadge} block>Submit</Button>
-                {badgeModal.url ? <div><p>Badge URL is: </p> <a className="tb-font-size-small" href={badgeModal.url} target="_blank">{badgeModal.url}</a></div> : null}
+                {badgeModal.url ? <div><p>Badge URL is: </p> <a className="tb-font-size-small" href={badgeModal.url} target="_blank" rel="noopener noreferrer">{badgeModal.url}</a></div> : null}
             </div >
         </div >
     )

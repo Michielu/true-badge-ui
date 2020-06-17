@@ -3,26 +3,16 @@ import TbLoader from "../../partials/TbLoader/TbLoader";
 import TbAuth from "../../partials/TbAuth/TbAuth";
 import TbSessionStorage from "../../utils/storage/sessionStorage";
 
-import {
-    useParams //TODO remove this import from this file
-} from "react-router-dom";
-
-
-// function renderLogin()
-
 function renderAuth(isBusy, isLogin, setLogin) {
     if (isBusy) {
         return <TbLoader show={isBusy} message="Loading..." />
     }
-    const username = TbSessionStorage.getItem("username");
-    const password = TbSessionStorage.getItem("password");
-    const wrong = TbSessionStorage.getItem("asdf");
+    // const username = TbSessionStorage.getItem("username");
+    // const password = TbSessionStorage.getItem("password");
+    // const wrong = TbSessionStorage.getItem("asdf");
     if (isLogin) {
         return (<div>
             <h3>"Login"</h3>
-            {/* <p>{username}</p>
-            <p>{password}</p>
-            <p>{wrong}</p> */}
             <p>{isLogin}</p>
             <div>
                 <TbAuth isLogin></TbAuth>
@@ -36,19 +26,12 @@ function renderAuth(isBusy, isLogin, setLogin) {
     return (
         <div>
             <h3>"Register"</h3>
-            {/* <p>{username}</p>
-            <p>{password}</p>
-            <p>w{wrong}</p> */}
             <p>{isLogin}</p>
-
             <div>
                 <TbAuth isLogin></TbAuth>
                 <small>Already have an account? <p onClick={() => {
-                    console.log("hi")
                     setLogin(!isLogin)
-
                 }}>Login</p></small>
-                {/* <div>Already have an account? <a onClick={() => { setLogin(!isLogin) }} >Login</a></div> */}
             </div>
         </div>
     )
@@ -60,34 +43,7 @@ function Auth() {
     const [isLogin, setLogin] = useState(false);
     //Have creds be of an creds object? Interface: login and register
     //Reseach if possible/good practice
-    const [creds, setCreds] = useState();
-
-    // const toggleLogin = () => {
-    //     setLogin(!isLogin);
-    // }
-
-    let url: any = useParams();
-
-    //Check if creds are cached
-
-    // useEffect(() => {
-    //     //Set badgeID
-    //     setBadgeURL(url.id);
-    // }, [badgeURL, url]);
-
-    //TODO error handling
-    // useEffect(() => {
-    //     async function callBadgeDataService() {
-    //         // const data = await BadgeDataService.get(url.id);
-    //         //Wait to
-    //         setBusy(false);
-    //         setBadgeData(data);
-    //     }
-
-    //     if (isBusy && url) {
-    //         callBadgeDataService();
-    //     }
-    // }, [isBusy, url]);
+    // const [creds, setCreds] = useState();
 
     useEffect(() => {
         async function setWait() {
