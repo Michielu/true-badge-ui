@@ -1,9 +1,9 @@
 import React from 'react';
-import { TbJumbotron, TbCTA } from '../../partials/';
+import { TbCard, TbJumbotron, TbCTA } from '../../partials/';
 
 const About: React.FunctionComponent<{}> = () => {
-    const personal: string = "My name, Michielu (pronounced Mitchel), is an English name tweaked to make it easier for my Japanese relatives to pronounce. It has never been pronounced correctly without help. "
-    const personal2: string = "There are plenty of other people like me, people with ethnic or unique names, that could use this website."
+    const personal: string = "My name, Michielu, has never been pronounced correctly without assistance. It has led to many unnecessarily uncomfortable situations."
+    const personal2: string = "There are plenty of awesome names out there that could use some help in having others pronounce it correctly. Hopfully, this website can help."
     const pageTitle: string = "About";
     const buttonProps = {
         value: "Create Badge",
@@ -12,16 +12,7 @@ const About: React.FunctionComponent<{}> = () => {
     return (
         <div>
             <TbJumbotron text={pageTitle}></TbJumbotron>
-            <div className="row">
-                <div className="col-12 col-sm-4">
-                    <img className="tb-width-100 tb-box-shawdow tb-margin-5" src="/me.jpg" alt="Me"></img>
-                </div>
-                <div className="col-12 col-sm-8 tb-text-align-left">
-                    <p>{personal}</p>
-                    <p>{personal2}</p>
-                </div>
-            </div>
-            <br />
+            <TbCard texts={[personal, personal2]} />
             <div className="tb-center">
                 <TbCTA buttonProps={buttonProps} />
             </div>
